@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dirección | Weazel News</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">WEAZEL NEWS</a>
+        <ul>
+            <li><a href="portal.html" class="activo">Salir de Dirección</a></li>
+        </ul>
+    </nav>
+
+    <header class="small-header" style="height: 20vh;">
+        <h1>Despacho de Dirección</h1>
+    </header>
+
+    <main id="panel-directiva">
+        <section>
+            <div class="grid">
+                <!-- AÑADIR EMPLEADO -->
+                <div class="card">
+                    <h2>Registrar Empleado</h2>
+                    <p>Añade nuevos reporteros al sistema.</p>
+                    <br>
+                    <form id="form-nuevo-empleado">
+                        <input type="text" id="nuevo-nombre" placeholder="Nombre completo del empleado" required>
+                        <input type="password" id="nueva-pass" placeholder="Contraseña de acceso" required>
+                        <button type="submit" class="btn" style="width: 100%;">CREAR CUENTA</button>
+                    </form>
+                </div>
+
+                <!-- ESTADÍSTICAS GLOBALES -->
+                <div class="card" style="border-top-color: #4caf50;">
+                    <h2 style="color: #4caf50;">Resumen General</h2>
+                    <p>Bienvenido, Director.</p>
+                    <br>
+                    <h3 style="color: white; font-size: 2rem;">Total Empleados: <span id="contador-empleados" style="color: #4caf50;">0</span></h3>
+                    <br>
+                    <button id="btn-logout-dir" class="btn" style="background-color: transparent; border: 1px solid white;">Cerrar Sesión Directiva</button>
+                </div>
+            </div>
+
+            <!-- TABLA DE EMPLEADOS -->
+            <div class="card" style="margin-top: 2rem;">
+                <h2>Plantilla y Fichajes</h2>
+                <table class="tabla-empleados">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Contraseña</th>
+                            <th>Estado</th>
+                            <th>Horas Semanales</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-empleados">
+                        <!-- Se llenará mediante JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer><h2>WEAZEL NEWS</h2></footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
