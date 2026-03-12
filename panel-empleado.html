@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Fichajes | Weazel News</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">WEAZEL NEWS</a>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="periodicos.html">Periódicos</a></li>
+            <li><a href="podcasts.html">Podcasts</a></li>
+            <li><a href="eventos.html">Eventos</a></li>
+            <li><a href="equipo.html">Equipo</a></li>
+            <li><a href="portal.html" class="activo">Portal Empleado</a></li>
+        </ul>
+    </nav>
+
+    <header class="small-header">
+        <h1>Panel de Control</h1>
+    </header>
+
+    <main id="panel-fichaje">
+        <section>
+            <div class="card" style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: white;">Bienvenido/a, <span id="nombre-empleado-display" style="color: var(--rojo-weazel);"></span></h2>
+                <p>Sistema de registro de jornada laboral.</p>
+                
+                <div class="horas-box">
+                    Horas Semanales:<br>
+                    <span id="horas-semana">0h 0m</span>
+                </div>
+
+                <button id="btn-fichaje" class="btn" style="width: 80%; font-size: 1.5rem; padding: 20px; margin-bottom: 10px;">ENTRAR DE SERVICIO</button>
+                <p id="estado-servicio" style="margin-bottom: 20px;">⚫ Fuera de servicio</p>
+
+                <button id="btn-logout" class="btn btn-logout" style="width: 40%;">Cerrar Sesión</button>
+            </div>
+        </section>
+    </main>
+
+    <footer><h2>WEAZEL NEWS</h2></footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
