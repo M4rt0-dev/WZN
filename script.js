@@ -1,66 +1,61 @@
-// === script.js completo (Versión a prueba de balas) ===
+// === script.js (Versión Optimizada para GitHub Pages) ===
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. BASE DE DATOS LOCAL (Ya no necesitas el archivo usuarios.json, puedes borrarlo)
-    const USUARIOS = [
-        { "user": "Adrian_Blackwood", "pass": "WZN2026", "nombre": "Adrian Blackwood", "rol": "admin" },
-        { "user": "Monet_Basenji", "pass": "WZN_monet", "nombre": "Monet Basenji", "rol": "admin" },
-        { "user": "Elisa_Martinez", "pass": "WZN_elisa", "nombre": "Elisa Martinez", "rol": "admin" },
-        { "user": "Nikki_Bouwer", "pass": "WZN_nikki", "nombre": "Nikki Bouwer", "rol": "admin" },
-        { "user": "Apapurcio_Buenafuente", "pass": "WZN_apapurcio", "nombre": "Apapurcio Buenafuente", "rol": "admin" },
-        { "user": "Mateo_Mancini", "pass": "WZN_mateo", "nombre": "Mateo Mancini", "rol": "admin" },
-        { "user": "Benyto_Frailes", "pass": "WZN_benyto", "nombre": "Benyto Frailes", "rol": "admin" },
-        { "user": "Lucy_Taylor", "pass": "WZN_lucy", "nombre": "Lucy Taylor", "rol": "empleado" }
-    ];
-
-    // 2. CONFIGURACIÓN DE SUPABASE
+    // === 1. CONFIGURACIÓN DE SUPABASE ===
     const SUPABASE_URL = 'https://zokaarirkqourkkfmkso.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // 3. LÓGICA DE INICIO DE SESIÓN
+    // === 2. LÓGICA DE INICIO DE SESIÓN ===
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
-        // Usamos onsubmit para sobreescribir escuchas duplicadas
         formLogin.onsubmit = async (e) => {
             e.preventDefault();
-            
             const btnSubmit = formLogin.querySelector('button[type="submit"]');
-            
-            // Leemos el input y lo pasamos a minúsculas para una comprobación más flexible
             const uIn = document.getElementById('login-user').value.trim().toLowerCase();
             const pIn = document.getElementById('login-pass').value.trim();
             
-            // Busca al usuario (permite escribir "Lucy Taylor" o "lucy_taylor")
-            const emp = USUARIOS.find(u => 
-                (u.user.toLowerCase() === uIn || u.user.toLowerCase().replace('_', ' ') === uIn) 
-                && u.pass === pIn
-            );
-
-            if (emp) {
-                btnSubmit.textContent = 'CARGANDO...';
-                btnSubmit.disabled = true;
-
-                localStorage.setItem('weazel_session', emp.nombre);
-                localStorage.setItem('weazel_role', emp.rol);
+            try {
+                // El "?t=" evita el caché agresivo de GitHub Pages para que siempre lea los nuevos usuarios
+                const res = await fetch('usuarios.json?t=' + new Date().getTime());
+                const db = await res.json();
                 
-                try {
-                    const { data: existe } = await supabaseClient.from('fichajes').select('nombre').eq('nombre', emp.nombre).single();
-                    if (!existe) {
-                        await supabaseClient.from('fichajes').insert([{ nombre: emp.nombre, segundos: 0 }]);
+                // Búsqueda flexible (permite escribir "Adrian Blackwood" o "adrian_blackwood")
+                const emp = db.find(u => 
+                    (u.user.toLowerCase() === uIn || u.user.toLowerCase().replace('_', ' ') === uIn) 
+                    && u.pass === pIn
+                );
+
+                if (emp) {
+                    btnSubmit.textContent = 'CARGANDO...';
+                    btnSubmit.disabled = true;
+
+                    localStorage.setItem('weazel_session', emp.nombre);
+                    localStorage.setItem('weazel_role', emp.rol);
+                    
+                    // Sincronizar con Supabase
+                    try {
+                        const { data: existe } = await supabaseClient.from('fichajes').select('nombre').eq('nombre', emp.nombre).single();
+                        if (!existe) {
+                            await supabaseClient.from('fichajes').insert([{ nombre: emp.nombre, segundos: 0 }]);
+                        }
+                    } catch(err) {
+                        console.log("Creando nuevo registro en DB...");
                     }
-                } catch(error) {
-                    console.log("Aviso de conexión (se ignora):", error);
+                    
+                    // Redirigir (Asegúrate de que los nombres de archivo en GitHub estén todo en minúsculas)
+                    window.location.href = emp.rol === 'admin' ? 'panel-directiva.html' : 'panel-empleado.html';
+                } else {
+                    alert('❌ Usuario o contraseña incorrectos.');
                 }
-                
-                window.location.href = emp.rol === 'admin' ? 'panel-directiva.html' : 'panel-empleado.html';
-            } else {
-                alert('❌ Datos incorrectos. Revisa tu usuario y contraseña.');
+            } catch (error) {
+                console.error("Error al leer usuarios.json en GitHub:", error);
+                alert("Hubo un problema de conexión con el servidor. Recarga la página.");
             }
         };
     }
 
-    // 4. LÓGICA DEL PANEL DE EMPLEADO
+    // === 3. LÓGICA DEL PANEL DE EMPLEADO ===
     const panelFichaje = document.getElementById('panel-fichaje');
     if (panelFichaje) {
         const nombre = localStorage.getItem('weazel_session');
@@ -84,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if(btn) {
             btn.onclick = async () => {
-                btn.disabled = true; // Evitar clics dobles rápidos
+                btn.disabled = true;
                 const { data } = await supabaseClient.from('fichajes').select('*').eq('nombre', nombre).single();
                 if (data && data.en_servicio) {
                     const diff = Math.floor((Date.now() - new Date(data.entrada)) / 1000);
@@ -114,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 5. LÓGICA DEL PANEL DE DIRECTIVA
+    // === 4. LÓGICA DEL PANEL DE DIRECTIVA ===
     const panelDir = document.getElementById('panel-directiva');
     if (panelDir) {
         if (localStorage.getItem('weazel_role') !== 'admin') {
@@ -124,14 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function cargarGlobal() {
             const { data: fichajes } = await supabaseClient.from('fichajes').select('*');
-            const lista = document.getElementById('lista-empleados');
+            // Cargar usuarios con bypass de caché
+            const res = await fetch('usuarios.json?t=' + new Date().getTime());
+            const usuarios = await res.json();
             
+            const lista = document.getElementById('lista-empleados');
             if (!lista) return;
             
             lista.innerHTML = '';
             let contador = 0;
 
-            USUARIOS.forEach(u => {
+            usuarios.forEach(u => {
                 contador++;
                 const f = (fichajes && fichajes.find(x => x.nombre === u.nombre)) || { segundos: 0, en_servicio: false };
                 const fila = document.createElement('tr');
@@ -155,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         window.resetear = async (n) => {
-            if (confirm(`¿Resetear horas de ${n}?`)) {
+            if (confirm(`¿Estás seguro de resetear las horas de ${n} a cero?`)) {
                 await supabaseClient.from('fichajes').update({ segundos: 0 }).eq('nombre', n);
                 cargarGlobal();
             }
@@ -173,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cargarGlobal();
     }
 
-    // 6. BUZÓN ANÓNIMO
+    // === 5. BUZÓN ANÓNIMO ===
     const formBuzon = document.getElementById('form-buzon');
     if (formBuzon) {
         formBuzon.onsubmit = function(e) {
@@ -190,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         btnSubmit.textContent = 'Enviar Correo a Redacción';
                         btnSubmit.disabled = false;
                     }, (err) => {
-                        alert('Error al enviar el correo.');
+                        alert('Error al enviar el correo. Revisa la consola.');
                         btnSubmit.disabled = false;
                     });
             }
