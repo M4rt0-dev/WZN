@@ -2,11 +2,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // === CONFIGURACIÓN DE SUPABASE ===
-const SUPABASE_URL = 'https://zokaarirkqourkkfmkso.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-
+    const SUPABASE_URL = 'https://zokaarirkqourkkfmkso.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
+    // Usamos supabaseClient para evitar colisiones con window.supabase
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // --- LÓGICA DE INICIO DE SESIÓN ---
     const formLogin = document.getElementById('form-login');
@@ -16,18 +15,30 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             const uIn = document.getElementById('login-user').value.trim();
             const pIn = document.getElementById('login-pass').value.trim();
             
-            const res = await fetch('usuarios.json');
-            const db = await res.json();
-            const emp = db.find(u => u.user === uIn && u.pass === pIn);
+            try {
+                const res = await fetch('usuarios.json');
+                const db = await res.json();
+                const emp = db.find(u => u.user === uIn && u.pass === pIn);
 
-            if (emp) {
-                localStorage.setItem('weazel_session', emp.nombre);
-                localStorage.setItem('weazel_role', emp.rol);
-                // Crear registro en la nube si no existe
-                await supabase.from('fichajes').insert([{ nombre: emp.nombre, segundos: 0 }]).select();
-                window.location.href = emp.rol === 'admin' ? 'panel-directiva.html' : 'panel-empleado.html';
-            } else {
-                alert('❌ Datos incorrectos');
+                if (emp) {
+                    localStorage.setItem('weazel_session', emp.nombre);
+                    localStorage.setItem('weazel_role', emp.rol);
+                    
+                    // Comprobar si el registro en la nube ya existe
+                    const { data: existe } = await supabaseClient.from('fichajes').select('nombre').eq('nombre', emp.nombre).single();
+                    
+                    if (!existe) {
+                        await supabaseClient.from('fichajes').insert([{ nombre: emp.nombre, segundos: 0 }]);
+                    }
+                    
+                    // Redirigir según el rol
+                    window.location.href = emp.rol === 'admin' ? 'panel-directiva.html' : 'panel-empleado.html';
+                } else {
+                    alert('❌ Datos incorrectos');
+                }
+            } catch (error) {
+                console.error("Error al iniciar sesión:", error);
+                alert("Hubo un problema. Revisa la consola o asegúrate de usar Live Server.");
             }
         });
     }
@@ -38,8 +49,12 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         const nombre = localStorage.getItem('weazel_session');
         const btn = document.getElementById('btn-fichaje');
         
+        // Mostrar el nombre del empleado en la interfaz
+        const nombreDisplay = document.getElementById('nombre-empleado-display');
+        if (nombreDisplay) nombreDisplay.innerText = nombre;
+        
         async function refrescar() {
-            const { data } = await supabase.from('fichajes').select('*').eq('nombre', nombre).single();
+            const { data } = await supabaseClient.from('fichajes').select('*').eq('nombre', nombre).single();
             if (data) {
                 const h = Math.floor(data.segundos / 3600);
                 const m = Math.floor((data.segundos % 3600) / 60);
@@ -52,15 +67,15 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         }
 
         btn.addEventListener('click', async () => {
-            const { data } = await supabase.from('fichajes').select('*').eq('nombre', nombre).single();
+            const { data } = await supabaseClient.from('fichajes').select('*').eq('nombre', nombre).single();
             if (data.en_servicio) {
                 const diff = Math.floor((Date.now() - new Date(data.entrada)) / 1000);
-                await supabase.from('fichajes').update({ 
+                await supabaseClient.from('fichajes').update({ 
                     en_servicio: false, 
                     segundos: data.segundos + diff 
                 }).eq('nombre', nombre);
             } else {
-                await supabase.from('fichajes').update({ 
+                await supabaseClient.from('fichajes').update({ 
                     en_servicio: true, 
                     entrada: new Date().toISOString() 
                 }).eq('nombre', nombre);
@@ -68,111 +83,80 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             refrescar();
         });
         refrescar();
-    }
 
-    // --- LÓGICA DEL PANEL DE DIRECTIVA (Vista Global) ---
-    const panelDir = document.getElementById('panel-directiva');
-    if (panelDir) {
-        async function cargarGlobal() {
-            const { data: fichajes } = await supabase.from('fichajes').select('*');
-            const res = await fetch('usuarios.json');
-            const usuarios = await res.json();
-            const lista = document.getElementById('lista-empleados');
-            lista.innerHTML = '';
-
-            usuarios.forEach(u => {
-                const f = fichajes.find(x => x.nombre === u.nombre) || { segundos: 0 };
-                const fila = document.createElement('tr');
-                fila.innerHTML = `
-                    <td>${u.nombre}</td>
-                    <td>${u.pass}</td>
-                    <td>${f.en_servicio ? '🟢 EN SERVICIO' : '🔴 OFF'}</td>
-                    <td>${(f.segundos / 3600).toFixed(2)}h</td>
-                    <td><button onclick="resetear('${u.nombre}')" class="btn">Reset</button></td>
-                `;
-                lista.appendChild(fila);
+        // Lógica para cerrar sesión del empleado
+        const btnLogout = document.getElementById('btn-logout');
+        if (btnLogout) {
+            btnLogout.addEventListener('click', () => {
+                localStorage.removeItem('weazel_session');
+                localStorage.removeItem('weazel_role');
+                window.location.href = 'portal.html';
             });
         }
-        window.resetear = async (n) => {
-            await supabase.from('fichajes').update({ segundos: 0 }).eq('nombre', n);
-            cargarGlobal();
-        };
-        cargarGlobal();
     }
 
-
-    // --- INICIALIZAR BASE DE DATOS LOCAL ---
-    if (!localStorage.getItem('weazel_employees')) {
-        localStorage.setItem('weazel_employees', JSON.stringify({}));
-    }
-
-    // --- LÓGICA DEL PANEL DE DIRECTIVA (panel-directiva.html) ---
-    const panelDirectiva = document.getElementById('panel-directiva');
-    if (panelDirectiva) {
+    // --- LÓGICA DEL PANEL DE DIRECTIVA (Vista Global Sincronizada) ---
+    const panelDir = document.getElementById('panel-directiva');
+    if (panelDir) {
+        // Protección de ruta: Solo admins
         if (localStorage.getItem('weazel_role') !== 'admin') {
             window.location.href = 'portal.html';
             return;
         }
 
-        // FUNCIÓN ASÍNCRONA PARA ACTUALIZAR LA LISTA DESDE EL JSON
-        async function actualizarListaEmpleados() {
+        async function cargarGlobal() {
+            const { data: fichajes } = await supabaseClient.from('fichajes').select('*');
+            const res = await fetch('usuarios.json');
+            const usuarios = await res.json();
             const lista = document.getElementById('lista-empleados');
+            
             if (!lista) return;
+            
+            lista.innerHTML = '';
+            let contador = 0;
 
-            try {
-                const respuesta = await fetch('usuarios.json');
-                const usuariosJSON = await respuesta.json();
-                const empleadosFichaje = JSON.parse(localStorage.getItem('weazel_employees')) || {};
+            usuarios.forEach(u => {
+                contador++;
+                const f = (fichajes && fichajes.find(x => x.nombre === u.nombre)) || { segundos: 0, en_servicio: false };
+                const fila = document.createElement('tr');
+                
+                const estado = f.en_servicio ? 
+                    '<span style="color: #4caf50;">● En Servicio</span>' : 
+                    '<span style="color: #f44336;">○ Fuera de Servicio</span>';
 
-                lista.innerHTML = '';
-                let contador = 0;
+                fila.innerHTML = `
+                    <td>${u.nombre} <br><small style="color:var(--texto-gris)">(${u.rol})</small></td>
+                    <td>${u.pass}</td>
+                    <td>${estado}</td>
+                    <td>${(f.segundos / 3600).toFixed(2)}h</td>
+                    <td><button onclick="resetear('${u.nombre}')" class="btn" style="background:var(--rojo-oscuro); padding:5px 10px;">Reset</button></td>
+                `;
+                lista.appendChild(fila);
+            });
 
-                usuariosJSON.forEach(emp => {
-                    contador++;
-                    const datosFichaje = empleadosFichaje[emp.nombre] || { enServicio: false, totalSeconds: 0 };
-                    const estado = datosFichaje.enServicio ? 
-                        '<span style="color: #4caf50;">● En Servicio</span>' : 
-                        '<span style="color: #f44336;">○ Fuera de Servicio</span>';
-                    const horas = (datosFichaje.totalSeconds / 3600).toFixed(2);
-
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${emp.nombre} <br><small style="color:var(--texto-gris)">(${emp.rol})</small></td>
-                        <td>${emp.pass}</td>
-                        <td>${estado}</td>
-                        <td>${horas}h</td>
-                        <td>
-                            <button class="btn" style="background:var(--rojo-oscuro); padding:5px 10px;" 
-                                onclick="resetearHoras('${emp.nombre}')">Resetear</button>
-                        </td>
-                    `;
-                    lista.appendChild(fila);
-                });
-
-                document.getElementById('contador-empleados').innerText = contador;
-            } catch (error) {
-                console.error("Error al listar empleados:", error);
-            }
+            // Actualizar el contador de empleados
+            const contadorElem = document.getElementById('contador-empleados');
+            if (contadorElem) contadorElem.innerText = contador;
         }
 
-        window.resetearHoras = function(nombre) {
-            if (confirm(`¿Resetear horas de ${nombre}?`)) {
-                let empleados = JSON.parse(localStorage.getItem('weazel_employees'));
-                if (empleados[nombre]) {
-                    empleados[nombre].totalSeconds = 0;
-                    localStorage.setItem('weazel_employees', JSON.stringify(empleados));
-                    actualizarListaEmpleados();
-                }
+        window.resetear = async (n) => {
+            if (confirm(`¿Resetear horas de ${n}?`)) {
+                await supabaseClient.from('fichajes').update({ segundos: 0 }).eq('nombre', n);
+                cargarGlobal();
             }
         };
 
-        document.getElementById('btn-logout-dir').addEventListener('click', () => {
-            localStorage.removeItem('weazel_session');
-            localStorage.removeItem('weazel_role');
-            window.location.href = 'portal.html';
-        });
+        // Lógica para cerrar sesión del director
+        const btnLogoutDir = document.getElementById('btn-logout-dir');
+        if (btnLogoutDir) {
+            btnLogoutDir.addEventListener('click', () => {
+                localStorage.removeItem('weazel_session');
+                localStorage.removeItem('weazel_role');
+                window.location.href = 'portal.html';
+            });
+        }
 
-        actualizarListaEmpleados();
+        cargarGlobal();
     }
 
     // --- LÓGICA DEL BUZÓN ANÓNIMO (EmailJS) ---
