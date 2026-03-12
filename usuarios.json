@@ -1,45 +1,51 @@
 [
   {
+    "user": "DirectivaWZN",
+    "pass": "WZN123COntraSEna",
+    "nombre": "Administrador",
+    "rol": "admin"
+  },
+  {
     "user": "Adrian_Blackwood",
     "pass": "WZN2026",
     "nombre": "Adrian Blackwood",
-    "rol": "admin"
+    "rol": "empleado"
   },
   {
     "user": "Monet_Basenji",
     "pass": "WZN_monet",
     "nombre": "Monet Basenji",
-    "rol": "admin"
+    "rol": "empleado"
   },
   {
     "user": "Elisa_Martinez",
     "pass": "WZN_elisa",
     "nombre": "Elisa Martinez",
-    "rol": "admin"
+    "rol": "empleado"
   },
   {
     "user": "Nikki_Bouwer",
     "pass": "WZN_nikki",
     "nombre": "Nikki Bouwer",
-    "rol": "admin"
+    "rol": "empleado"
   },
   {
     "user": "Apapurcio_Buenafuente",
     "pass": "WZN_apapurcio",
     "nombre": "Apapurcio Buenafuente",
-    "rol": "admin"
+    "rol": "empleado"
   },
   {
     "user": "Mateo_Mancini",
     "pass": "WZN_mateo",
     "nombre": "Mateo Mancini",
-    "rol": "admin"
+    "rol": "empleado"
   },
   {
     "user": "Benyto_Frailes",
     "pass": "WZN_benyto",
     "nombre": "Benyto Frailes",
-    "rol": "admin"
+    "rol": "empleado"
   },
   {
     "user": "Lucy_Taylor",
@@ -47,4 +53,5 @@
     "nombre": "Lucy Taylor",
     "rol": "empleado"
   }
+
 ]
