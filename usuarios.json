@@ -70,5 +70,11 @@
     "pass": "WZN_raul",
     "nombre": "Raul Vargas",
     "rol": "empleado"
+  },
+  {
+    "user": "Aren_Hagen",
+    "pass": "WZN_aren",
+    "nombre": "Aren Hagen",
+    "rol": "empleado"
   }
 ]
