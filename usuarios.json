@@ -52,6 +52,23 @@
     "pass": "WZN_lucy",
     "nombre": "Lucy Taylor",
     "rol": "empleado"
+  },
+  {
+    "user": "Yuki_Murakami",
+    "pass": "WZN_yuki",
+    "nombre": "Yuki Murakami",
+    "rol": "empleado"
+  },
+  {
+    "user": "Jeremias_Vargas",
+    "pass": "WZN_jeremias",
+    "nombre": "Jeremias Vargas",
+    "rol": "empleado"
+  },
+  {
+    "user": "Raul_Vargas",
+    "pass": "WZN_raul",
+    "nombre": "Raul Vargas",
+    "rol": "empleado"
   }
-
 ]
