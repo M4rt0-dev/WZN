@@ -4,52 +4,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- INICIALIZAR BASE DE DATOS LOCAL ---
     // Si no existe la lista de empleados, la creamos vacía desde cero.
     // Ejemplo conceptual de cómo sería el nuevo login
-fetch('usuarios.json')
-    .then(respuesta => respuesta.json())
-    .then(empleados => {
-        // Aquí la web busca si el usuario y la contraseña coinciden con el JSON
-        const empleadoValido = empleados.find(emp => emp.user === usuarioIngresado && emp.pass === passIngresada);
-        
-        if (empleadoValido) {
-            // ¡Login correcto! Pasamos a la base de datos de horas.
-        } else {
-            alert('❌ Credenciales incorrectas.');
-        }
-    });
-
-    // --- LÓGICA DE INICIO DE SESIÓN (portal.html) ---
+// --- LÓGICA DE INICIO DE SESIÓN (portal.html) ---
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
-        formLogin.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const usuario = document.getElementById('login-user').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
+        formLogin.addEventListener('submit', async function(e) {
+            e.preventDefault(); // Evita que la página se recargue
             
-            // 1. COMPROBAR SI ES LA DIRECTIVA
-            if (usuario === 'DirectivaWZN' && pass === 'WZN123COntraSEna') {
-                localStorage.setItem('weazel_session', 'Directiva');
-                localStorage.setItem('weazel_role', 'admin');
-                window.location.href = 'panel-directiva.html';
-                return;
-            }
-
-            // 2. COMPROBAR SI ES UN EMPLEADO CREADO POR LA DIRECTIVA
-            const empleados = JSON.parse(localStorage.getItem('weazel_employees'));
-            if (empleados[usuario]) {
-                if (empleados[usuario].password === pass) {
-                    // Contraseña correcta
-                    localStorage.setItem('weazel_session', usuario);
-                    localStorage.setItem('weazel_role', 'empleado');
-                    window.location.href = 'panel-empleado.html';
-                } else {
-                    alert('❌ Contraseña incorrecta.');
+            // 1. Obtener lo que el usuario ha escrito en el formulario
+            const usuarioInput = document.getElementById('login-user').value.trim();
+            const passInput = document.getElementById('login-pass').value.trim();
+            
+            try {
+                // 2. Descargar y leer el archivo usuarios.json
+                const respuesta = await fetch('usuarios.json');
+                
+                // Comprobamos si hubo un error al leer el archivo (por ejemplo, si no se encuentra)
+                if (!respuesta.ok) {
+                    throw new Error('No se pudo acceder al archivo de usuarios.');
                 }
-            } else {
-                alert('❌ Este usuario no existe. La Directiva debe crear tu cuenta primero.');
+                
+                const usuarios = await respuesta.json();
+                
+                // 3. Buscar en el JSON si existe alguien con ese usuario y contraseña
+                const empleadoValido = usuarios.find(
+                    emp => emp.user === usuarioInput && emp.pass === passInput
+                );
+
+                if (empleadoValido) {
+                    // 4. ¡Login correcto! Guardamos la "sesión" en el navegador
+                    localStorage.setItem('weazel_session', empleadoValido.user);
+                    localStorage.setItem('weazel_role', empleadoValido.rol);
+                    localStorage.setItem('weazel_nombre', empleadoValido.nombre); // Guardamos el nombre real para mostrarlo bonito
+                    
+                    // 5. Redirigir a la página correcta según su rol
+                    if (empleadoValido.rol === 'admin') {
+                        window.location.href = 'panel-directiva.html';
+                    } else if (empleadoValido.rol === 'empleado') {
+                        window.location.href = 'panel-empleado.html';
+                    }
+                } else {
+                    // El usuario o la contraseña no coinciden con el JSON
+                    alert('❌ Credenciales incorrectas. Comprueba tu usuario y contraseña.');
+                }
+                
+            } catch (error) {
+                // Si falla la conexión o hay un error de lectura
+                console.error("Error en el login:", error);
+                alert('⚠️ Error de conexión con la base de datos de usuarios.');
             }
         });
     }
-
     // --- LÓGICA DEL PANEL DE EMPLEADO (panel-empleado.html) ---
     const panelFichaje = document.getElementById('panel-fichaje');
     if (panelFichaje) {
