@@ -164,22 +164,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         // crear cuentas en base de datos sin añadirlas al JSON rompería el inicio de sesión.
 
         async function cargarTablaEmpleados() {
-            tbodyEmpleados.innerHTML = '<tr><td colspan="5">Cargando datos desde la nube...</td></tr>';
+            tbodyEmpleados.innerHTML = '<tr><td colspan="5">Cargando datos desde la nube y JSON...</td></tr>';
             
-            // 1. Obtener horas de Supabase
-            const { data: empleadosDB, error } = await supabase.from('fichajes').select('*');
+            // 1. Obtener horas de Supabase (Si hay algún error, continuamos igualmente)
             let mapaHoras = {};
-            if (empleadosDB) {
-                empleadosDB.forEach(emp => { mapaHoras[emp.user_id] = emp; });
+            try {
+                const { data: empleadosDB, error } = await supabase.from('fichajes').select('*');
+                if (empleadosDB) {
+                    empleadosDB.forEach(emp => { mapaHoras[emp.user_id] = emp; });
+                }
+            } catch (err) {
+                console.error("No se pudo conectar con Supabase para las horas:", err);
             }
 
-            // 2. Obtener plantilla de usuarios.json
+            // 2. Obtener plantilla de usuarios.json EVITANDO LA CACHÉ
             let usuariosBase = [];
             try {
-                const respuesta = await fetch('usuarios.json');
-                if (respuesta.ok) usuariosBase = await respuesta.json();
+                // Le añadimos "?t=numeros" a la URL para engañar al navegador y obligarle a leer el archivo nuevo
+                const urlSinCache = 'usuarios.json?t=' + new Date().getTime();
+                
+                // Forzamos que no use caché
+                const respuesta = await fetch(urlSinCache, { cache: 'no-store' });
+                
+                if (respuesta.ok) {
+                    usuariosBase = await respuesta.json();
+                } else {
+                    console.error("No se pudo encontrar el archivo usuarios.json");
+                }
             } catch (e) {
-                console.error("Error al cargar JSON", e);
+                console.error("Error fatal al leer el JSON (revisa que no falten comas):", e);
             }
 
             tbodyEmpleados.innerHTML = '';
@@ -187,7 +200,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // 3. Cruzar datos y pintar tabla
             usuariosBase.forEach(u => {
-                if (u.rol === 'empleado') {
+                // Comprobamos que tenga rol, y lo pasamos a minúsculas por si alguien puso "Empleado"
+                if (u.rol && u.rol.toLowerCase() === 'empleado') {
                     total++;
                     let dataHoras = mapaHoras[u.user] || { enServicio: false, clockInTime: null, totalSeconds: 0 };
                     
@@ -195,7 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (dataHoras.enServicio && dataHoras.clockInTime) {
                         activeSeconds = Math.floor((Date.now() - dataHoras.clockInTime) / 1000);
                     }
-                    const totalSecs = dataHoras.totalSeconds + activeSeconds;
+                    const totalSecs = (dataHoras.totalSeconds || 0) + activeSeconds;
                     const hours = Math.floor(totalSecs / 3600);
                     const minutes = Math.floor((totalSecs % 3600) / 60);
 
@@ -212,6 +226,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     tbodyEmpleados.appendChild(tr);
                 }
             });
+            
+            // Si después de todo, el total es 0, avisamos en pantalla
+            if (total === 0) {
+                tbodyEmpleados.innerHTML = '<tr><td colspan="5" style="text-align:center; color: #ffaa00;">No se encontraron empleados. Comprueba el formato de usuarios.json</td></tr>';
+            }
+            
             contadorEmpleados.textContent = total;
         }
 
