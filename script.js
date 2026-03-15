@@ -16,25 +16,34 @@ document.addEventListener('DOMContentLoaded', async () => {
             const passInput = document.getElementById('login-pass').value.trim();
             
             try {
+                // Volvemos a la lectura simple para que no dé error en archivos locales
                 const respuesta = await fetch('usuarios.json');
-                if (!respuesta.ok) throw new Error('No se pudo acceder al archivo de usuarios.');
+                
+                if (!respuesta.ok) {
+                    throw new Error('No se pudo acceder al archivo de usuarios.');
+                }
                 
                 const usuarios = await respuesta.json();
                 const empleadoValido = usuarios.find(emp => emp.user === usuarioInput && emp.pass === passInput);
 
                 if (empleadoValido) {
+                    // ¡Login correcto!
                     localStorage.setItem('weazel_session', empleadoValido.user);
                     localStorage.setItem('weazel_role', empleadoValido.rol);
                     localStorage.setItem('weazel_nombre', empleadoValido.nombre);
                     
-                    if (empleadoValido.rol === 'admin') window.location.href = 'panel-directiva.html';
-                    else if (empleadoValido.rol === 'empleado') window.location.href = 'panel-empleado.html';
+                    // Redirigir según el rol
+                    if (empleadoValido.rol === 'admin') {
+                        window.location.href = 'panel-directiva.html';
+                    } else if (empleadoValido.rol === 'empleado') {
+                        window.location.href = 'panel-empleado.html';
+                    }
                 } else {
                     alert('❌ Credenciales incorrectas. Comprueba tu usuario y contraseña.');
                 }
             } catch (error) {
                 console.error("Error en el login:", error);
-                alert('⚠️ Error de conexión con la base de datos de usuarios.');
+                alert('⚠️ Error de conexión. Revisa la consola (F12) para más detalles.');
             }
         });
     }
