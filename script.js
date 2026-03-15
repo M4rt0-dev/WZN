@@ -54,21 +54,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    // --- LÓGICA DEL PANEL DE EMPLEADO (panel-empleado.html) ---
+   // --- LÓGICA DEL PANEL DE EMPLEADO (panel-empleado.html) ---
     const panelFichaje = document.getElementById('panel-fichaje');
     if (panelFichaje) {
         const sessionUser = localStorage.getItem('weazel_session');
         const sessionRole = localStorage.getItem('weazel_role');
+        const sessionNombre = localStorage.getItem('weazel_nombre') || sessionUser; // Usamos el nombre bonito si existe
         
         // Comprobar seguridad
         if (!sessionUser || sessionRole !== 'empleado') {
             window.location.href = 'portal.html';
-            return;
+            return; // Detenemos la ejecución aquí
         }
 
-        document.getElementById('nombre-empleado-display').textContent = sessionUser;
-        let empleados = JSON.parse(localStorage.getItem('weazel_employees'));
+        document.getElementById('nombre-empleado-display').textContent = sessionNombre;
+        
+        // --- 🟢 SOLUCIÓN AQUÍ ---
+        // 1. Obtenemos los empleados de la memoria, si no hay nada, creamos un objeto vacío
+        let empleados = JSON.parse(localStorage.getItem('weazel_employees')) || {};
+        
+        // 2. Si el usuario que ha entrado NO tiene registro de horas aún, se lo inicializamos
+        if (!empleados[sessionUser]) {
+            empleados[sessionUser] = {
+                enServicio: false,
+                clockInTime: null,
+                totalSeconds: 0
+            };
+            // Guardamos el nuevo empleado vacío en la memoria del navegador
+            localStorage.setItem('weazel_employees', JSON.stringify(empleados));
+        }
+
+        // Ahora sí, miData siempre existirá sin dar errores
         let miData = empleados[sessionUser];
+        // -----------------------
 
         const btnFichaje = document.getElementById('btn-fichaje');
         const estadoTexto = document.getElementById('estado-servicio');
@@ -80,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (miData.enServicio) {
                 btnFichaje.style.backgroundColor = '#4caf50';
                 btnFichaje.textContent = 'SALIR DE SERVICIO';
-                estadoTexto.innerHTML = '🟢 <b>' + sessionUser + '</b> está en servicio.';
+                estadoTexto.innerHTML = '🟢 <b>' + sessionNombre + '</b> está en servicio.';
                 if (miData.clockInTime) {
                     currentSessionSeconds = Math.floor((Date.now() - miData.clockInTime) / 1000);
                 }
@@ -127,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             localStorage.removeItem('weazel_session');
             localStorage.removeItem('weazel_role');
+            localStorage.removeItem('weazel_nombre'); // Limpiamos también el nombre
             window.location.href = 'portal.html';
         });
     }
