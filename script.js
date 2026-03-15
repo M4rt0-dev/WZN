@@ -3,9 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INICIALIZAR BASE DE DATOS LOCAL ---
     // Si no existe la lista de empleados, la creamos vacía desde cero.
-    if (!localStorage.getItem('weazel_employees')) {
-        localStorage.setItem('weazel_employees', JSON.stringify({}));
-    }
+    // Ejemplo conceptual de cómo sería el nuevo login
+fetch('usuarios.json')
+    .then(respuesta => respuesta.json())
+    .then(empleados => {
+        // Aquí la web busca si el usuario y la contraseña coinciden con el JSON
+        const empleadoValido = empleados.find(emp => emp.user === usuarioIngresado && emp.pass === passIngresada);
+        
+        if (empleadoValido) {
+            // ¡Login correcto! Pasamos a la base de datos de horas.
+        } else {
+            alert('❌ Credenciales incorrectas.');
+        }
+    });
 
     // --- LÓGICA DE INICIO DE SESIÓN (portal.html) ---
     const formLogin = document.getElementById('form-login');
