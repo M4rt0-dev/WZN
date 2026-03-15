@@ -2,8 +2,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
     // --- 1. INICIALIZAR SUPABASE ---
-    const supabaseUrl = 'TU_URL_DE_SUPABASE';
-    const supabaseKey = 'TU_ANON_KEY_DE_SUPABASE';
+    const supabaseUrl = 'https://zokaarirkqourkkfmkso.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpva2Fhcmlya3FvdXJra2Zta3NvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjU0MjIsImV4cCI6MjA4ODkwMTQyMn0.l4aRBAeQmXU_2bElWKcSKObzHgCZ2ET6l4HG3iYPBtQ';
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     // --- LÓGICA DE INICIO DE SESIÓN (portal.html) ---
