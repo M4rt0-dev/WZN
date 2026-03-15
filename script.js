@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const supabaseKey = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    // --- LÓGICA DE INICIO DE SESIÓN (portal.html) ---
+    // --- 2. LÓGICA DE INICIO DE SESIÓN (portal.html) ---
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
         formLogin.addEventListener('submit', async function(e) {
@@ -16,8 +16,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const passInput = document.getElementById('login-pass').value.trim();
             
             try {
-                // Volvemos a la lectura simple para que no dé error en archivos locales
-                const respuesta = await fetch('usuarios.json');
+                // Leer el archivo JSON de usuarios (evitando caché)
+                const urlSinCache = 'usuarios.json?t=' + new Date().getTime();
+                const respuesta = await fetch(urlSinCache, { cache: 'no-store' });
                 
                 if (!respuesta.ok) {
                     throw new Error('No se pudo acceder al archivo de usuarios.');
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const empleadoValido = usuarios.find(emp => emp.user === usuarioInput && emp.pass === passInput);
 
                 if (empleadoValido) {
-                    // ¡Login correcto!
+                    // Login correcto
                     localStorage.setItem('weazel_session', empleadoValido.user);
                     localStorage.setItem('weazel_role', empleadoValido.rol);
                     localStorage.setItem('weazel_nombre', empleadoValido.nombre);
@@ -43,18 +44,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             } catch (error) {
                 console.error("Error en el login:", error);
-                alert('⚠️ Error de conexión. Revisa la consola (F12) para más detalles.');
+                alert('⚠️ Error de conexión. Revisa que estés usando un servidor local (Live Server) para leer el JSON.');
             }
         });
     }
 
-    // --- LÓGICA DEL PANEL DE EMPLEADO (panel-empleado.html) ---
+    // --- 3. LÓGICA DEL PANEL DE EMPLEADO (panel-empleado.html) ---
     const panelFichaje = document.getElementById('panel-fichaje');
     if (panelFichaje) {
         const sessionUser = localStorage.getItem('weazel_session');
         const sessionRole = localStorage.getItem('weazel_role');
         const sessionNombre = localStorage.getItem('weazel_nombre') || sessionUser;
         
+        // Protección de ruta
         if (!sessionUser || sessionRole !== 'empleado') {
             window.location.href = 'portal.html';
             return;
@@ -62,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         document.getElementById('nombre-empleado-display').textContent = sessionNombre;
 
-        // 1. Cargar datos del empleado desde Supabase
+        // Cargar datos del empleado desde Supabase (SOLO HORAS)
         let miData = { user_id: sessionUser, enServicio: false, clockInTime: null, totalSeconds: 0 };
         
         const { data: dbData, error: dbError } = await supabase
@@ -74,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (dbData) {
             miData = dbData;
         } else if (dbError && dbError.code === 'PGRST116') {
-            // No existe el registro, lo creamos en Supabase
+            // No existe el registro en Supabase, lo creamos
             await supabase.from('fichajes').insert([miData]);
         } else {
             console.error("Error al conectar con Supabase:", dbError);
@@ -109,9 +111,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateUI();
         setInterval(updateUI, 60000); // Actualiza la vista cada minuto
 
-        // Actualizar Supabase al hacer click
+        // Funcionalidad del botón Entrar/Salir de servicio
         btnFichaje.addEventListener('click', async function() {
-            btnFichaje.disabled = true; // Evitar doble click rápido
+            btnFichaje.disabled = true;
             btnFichaje.textContent = 'Actualizando...';
 
             if (!miData.enServicio) {
@@ -125,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 miData.clockInTime = null;
             }
 
-            // Guardar en Supabase
+            // Guardar horas en Supabase
             await supabase.from('fichajes').update({
                 enServicio: miData.enServicio,
                 clockInTime: miData.clockInTime,
@@ -136,6 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateUI();
         });
 
+        // Funcionalidad de Cerrar Sesión
         btnLogout.addEventListener('click', async function() {
             if (miData.enServicio) {
                 const workedSeconds = Math.floor((Date.now() - miData.clockInTime) / 1000);
@@ -149,19 +152,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                     totalSeconds: miData.totalSeconds
                 }).eq('user_id', sessionUser);
                 
-                alert("Has sido desfichado al cerrar sesión para guardar tus horas en la nube.");
+                alert("Has sido desfichado automáticamente al cerrar sesión para guardar tus horas.");
             }
-            localStorage.clear(); // Limpia toda la sesión
+            localStorage.clear();
             window.location.href = 'portal.html';
         });
     }
 
-    // --- LÓGICA DEL DESPACHO DE DIRECTIVA (panel-directiva.html) ---
+    // --- 4. LÓGICA DEL DESPACHO DE DIRECTIVA (panel-directiva.html) ---
     const panelDirectiva = document.getElementById('panel-directiva');
     if (panelDirectiva) {
-        const sessionUser = localStorage.getItem('weazel_session');
         const sessionRole = localStorage.getItem('weazel_role');
 
+        // Protección de ruta
         if (sessionRole !== 'admin') {
             window.location.href = 'portal.html';
             return;
@@ -169,13 +172,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const tbodyEmpleados = document.getElementById('lista-empleados');
         const contadorEmpleados = document.getElementById('contador-empleados');
-        // NOTA: He eliminado el formNuevoEmpleado de aquí porque si usas usuarios.json para el login, 
-        // crear cuentas en base de datos sin añadirlas al JSON rompería el inicio de sesión.
+        const formNuevoEmpleado = document.getElementById('form-nuevo-empleado');
 
         async function cargarTablaEmpleados() {
-            tbodyEmpleados.innerHTML = '<tr><td colspan="5">Cargando datos desde la nube y JSON...</td></tr>';
+            tbodyEmpleados.innerHTML = '<tr><td colspan="5">Cargando datos desde usuarios.json y Supabase...</td></tr>';
             
-            // 1. Obtener horas de Supabase (Si hay algún error, continuamos igualmente)
+            // 1. Obtener horas de Supabase
             let mapaHoras = {};
             try {
                 const { data: empleadosDB, error } = await supabase.from('fichajes').select('*');
@@ -186,13 +188,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error("No se pudo conectar con Supabase para las horas:", err);
             }
 
-            // 2. Obtener plantilla de usuarios.json EVITANDO LA CACHÉ
+            // 2. Obtener lista de empleados del JSON
             let usuariosBase = [];
             try {
-                // Le añadimos "?t=numeros" a la URL para engañar al navegador y obligarle a leer el archivo nuevo
                 const urlSinCache = 'usuarios.json?t=' + new Date().getTime();
-                
-                // Forzamos que no use caché
                 const respuesta = await fetch(urlSinCache, { cache: 'no-store' });
                 
                 if (respuesta.ok) {
@@ -201,15 +200,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     console.error("No se pudo encontrar el archivo usuarios.json");
                 }
             } catch (e) {
-                console.error("Error fatal al leer el JSON (revisa que no falten comas):", e);
+                console.error("Error al leer el JSON:", e);
             }
 
             tbodyEmpleados.innerHTML = '';
             let total = 0;
 
-            // 3. Cruzar datos y pintar tabla
+            // 3. Cruzar datos (Usuarios JSON + Horas Supabase)
             usuariosBase.forEach(u => {
-                // Comprobamos que tenga rol, y lo pasamos a minúsculas por si alguien puso "Empleado"
                 if (u.rol && u.rol.toLowerCase() === 'empleado') {
                     total++;
                     let dataHoras = mapaHoras[u.user] || { enServicio: false, clockInTime: null, totalSeconds: 0 };
@@ -230,105 +228,40 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td style="color: gray;">${u.pass}</td>
                         <td>${estado}</td>
                         <td style="color: var(--rojo-weazel); font-weight: bold;">${hours}h ${minutes}m</td>
-                        <td><button class="btn btn-sm" disabled style="opacity:0.5;" title="Edita el JSON para borrar">Protegido</button></td>
+                        <td><button class="btn btn-sm" disabled style="opacity:0.5;" title="Edita el archivo JSON para modificar">Protegido</button></td>
                     `;
                     tbodyEmpleados.appendChild(tr);
                 }
             });
             
-            // Si después de todo, el total es 0, avisamos en pantalla
             if (total === 0) {
-                tbodyEmpleados.innerHTML = '<tr><td colspan="5" style="text-align:center; color: #ffaa00;">No se encontraron empleados. Comprueba el formato de usuarios.json</td></tr>';
+                tbodyEmpleados.innerHTML = '<tr><td colspan="5" style="text-align:center; color: #ffaa00;">No se encontraron empleados en usuarios.json</td></tr>';
             }
             
             contadorEmpleados.textContent = total;
         }
 
+        // Cargar tabla al entrar
         cargarTablaEmpleados();
 
+        // Intentar registrar un nuevo empleado
+        if (formNuevoEmpleado) {
+            formNuevoEmpleado.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Explicación: JS Frontend no puede editar archivos físicos por seguridad.
+                alert('⚠️ Para crear un nuevo empleado de forma permanente y segura, debes añadirlo manualmente en el archivo "usuarios.json" usando tu editor de código. El sistema usa ese archivo como única base de datos para los usuarios.');
+                this.reset();
+            });
+        }
+
+        // Cerrar sesión directiva
         document.getElementById('btn-logout-dir').addEventListener('click', function() {
             localStorage.clear();
             window.location.href = 'portal.html';
         });
     }
 
-        // Cargar tabla al iniciar
-        cargarTablaEmpleados();
-
-        // Crear un nuevo empleado (se guardará solo en el navegador)
-        formNuevoEmpleado.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nombre = document.getElementById('nuevo-nombre').value.trim();
-            const pass = document.getElementById('nueva-pass').value.trim();
-
-            let empleados = JSON.parse(localStorage.getItem('weazel_employees')) || {};
-            
-            if (empleados[nombre]) {
-                alert('Ese reportero ya tiene una cuenta local creada.');
-                return;
-            }
-
-            empleados[nombre] = {
-                password: pass,
-                enServicio: false,
-                clockInTime: null,
-                totalSeconds: 0
-            };
-
-            localStorage.setItem('weazel_employees', JSON.stringify(empleados));
-            this.reset();
-            cargarTablaEmpleados();
-            alert(`Cuenta de empleado para ${nombre} creada exitosamente en la base local.`);
-        });
-
-        // Cerrar sesión directiva
-        document.getElementById('btn-logout-dir').addEventListener('click', function() {
-            localStorage.removeItem('weazel_session');
-            localStorage.removeItem('weazel_role');
-            localStorage.removeItem('weazel_nombre'); // Limpiamos rastro
-            window.location.href = 'portal.html';
-        });
-    }
-
-        // Cargar tabla al iniciar
-        cargarTablaEmpleados();
-
-        // Crear un nuevo empleado
-        formNuevoEmpleado.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nombre = document.getElementById('nuevo-nombre').value.trim();
-            const pass = document.getElementById('nueva-pass').value.trim();
-
-            let empleados = JSON.parse(localStorage.getItem('weazel_employees'));
-            
-            if (empleados[nombre]) {
-                alert('Ese reportero ya tiene una cuenta creada.');
-                return;
-            }
-
-            empleados[nombre] = {
-                password: pass,
-                enServicio: false,
-                clockInTime: null,
-                totalSeconds: 0
-            };
-
-            localStorage.setItem('weazel_employees', JSON.stringify(empleados));
-            this.reset();
-            cargarTablaEmpleados();
-            alert(`Cuenta de empleado para ${nombre} creada exitosamente.`);
-        });
-
-        // Cerrar sesión directiva
-        document.getElementById('btn-logout-dir').addEventListener('click', function() {
-            localStorage.removeItem('weazel_session');
-            localStorage.removeItem('weazel_role');
-            window.location.href = 'portal.html';
-        });
-    }
-
-    // --- LÓGICA DEL BUZÓN ANÓNIMO CON EMAILJS (portal.html) ---
-    // (Mantenemos tu código de EmailJS intacto tal y como lo tenías)
+    // --- 5. LÓGICA DEL BUZÓN ANÓNIMO Y ANUNCIOS (EmailJS) ---
     const formBuzon = document.getElementById('form-buzon');
     if (formBuzon) {
         formBuzon.addEventListener('submit', function(e) {
@@ -337,23 +270,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnSubmit.textContent = 'Enviando...'; 
             btnSubmit.disabled = true;
 
-            const serviceID = 'service_a6y2ih9'; 
-            const templateID = 'template_9887dpi';
-
-            emailjs.sendForm(serviceID, templateID, this)
+            emailjs.sendForm('service_a6y2ih9', 'template_9887dpi', this)
                 .then(() => {
                     alert('¡El chivatazo ha sido enviado de forma anónima a la redacción!');
                     this.reset();
                     btnSubmit.textContent = 'Enviar Correo a Redacción';
                     btnSubmit.disabled = false;
                 }, (err) => {
-                    alert('Hubo un error al enviar el correo. Revisa la consola para más detalles.');
-                    console.log(JSON.stringify(err));
+                    alert('Hubo un error al enviar el correo. Revisa la consola.');
+                    console.error(err);
                     btnSubmit.textContent = 'Enviar Correo a Redacción';
                     btnSubmit.disabled = false;
                 });
         });
     }
+
     const formBuzon1 = document.getElementById('form-buzon1');
     if (formBuzon1) {
         formBuzon1.addEventListener('submit', function(e) {
@@ -362,19 +293,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnSubmit.textContent = 'Enviando...'; 
             btnSubmit.disabled = true;
 
-            const serviceID = 'service_a6y2ih9'; 
-            const templateID = 'template_dh8tpdk';
-
-            emailjs.sendForm(serviceID, templateID, this)
+            emailjs.sendForm('service_a6y2ih9', 'template_dh8tpdk', this)
                 .then(() => {
                     alert('¡Tu correo ha sido enviado con éxito!');
                     this.reset();
-                    btnSubmit.textContent = 'Enviar Correo a Redacción';
+                    btnSubmit.textContent = 'Enviar solicitud de publicación';
                     btnSubmit.disabled = false;
                 }, (err) => {
-                    alert('Hubo un error al enviar el correo. Revisa la consola para más detalles.');
-                    console.log(JSON.stringify(err));
-                    btnSubmit.textContent = 'Enviar Correo a Redacción';
+                    alert('Hubo un error al enviar el correo. Revisa la consola.');
+                    console.error(err);
+                    btnSubmit.textContent = 'Enviar solicitud de publicación';
                     btnSubmit.disabled = false;
                 });
         });

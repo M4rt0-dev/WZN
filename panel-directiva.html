@@ -14,27 +14,22 @@
             <li><a href="portal.html" class="activo">Salir de Dirección</a></li>
         </ul>
     </nav>
-
     <header class="small-header" style="height: 20vh;">
         <h1>Despacho de Dirección</h1>
     </header>
-
     <main id="panel-directiva">
         <section>
             <div class="grid">
-                <!-- AÑADIR EMPLEADO -->
                 <div class="card">
                     <h2>Registrar Empleado</h2>
                     <p>Añade nuevos reporteros al sistema.</p>
                     <br>
                     <form id="form-nuevo-empleado">
-                        <input type="text" id="nuevo-nombre" placeholder="Nombre completo del empleado" required>
+                        <input type="text" id="nuevo-nombre" placeholder="Nombre de usuario (Ej: Juan_Perez)" required>
                         <input type="password" id="nueva-pass" placeholder="Contraseña de acceso" required>
                         <button type="submit" class="btn" style="width: 100%;">CREAR CUENTA</button>
                     </form>
                 </div>
-
-                <!-- ESTADÍSTICAS GLOBALES -->
                 <div class="card" style="border-top-color: #4caf50;">
                     <h2 style="color: #4caf50;">Resumen General</h2>
                     <p>Bienvenido, Director.</p>
@@ -44,8 +39,6 @@
                     <button id="btn-logout-dir" class="btn" style="background-color: transparent; border: 1px solid white;">Cerrar Sesión Directiva</button>
                 </div>
             </div>
-
-            <!-- TABLA DE EMPLEADOS -->
             <div class="card" style="margin-top: 2rem;">
                 <h2>Plantilla y Fichajes</h2>
                 <table class="tabla-empleados">
@@ -59,15 +52,11 @@
                         </tr>
                     </thead>
                     <tbody id="lista-empleados">
-                        <!-- Se llenará mediante JavaScript -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </section>
     </main>
-
     <footer><h2>WEAZEL NEWS</h2></footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
