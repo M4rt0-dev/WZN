@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- 1. INICIALIZAR SUPABASE ---
     const supabaseUrl = 'https://zokaarirkqourkkfmkso.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpva2Fhcmlya3FvdXJra2Zta3NvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjU0MjIsImV4cCI6MjA4ODkwMTQyMn0.l4aRBAeQmXU_2bElWKcSKObzHgCZ2ET6l4HG3iYPBtQ';
+    const supabaseKey = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     // --- LÓGICA DE INICIO DE SESIÓN (portal.html) ---
