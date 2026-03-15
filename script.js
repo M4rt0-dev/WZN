@@ -1,92 +1,75 @@
 // === script.js ===
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
-    // --- INICIALIZAR BASE DE DATOS LOCAL ---
-    // Si no existe la lista de empleados, la creamos vacía desde cero.
-    // Ejemplo conceptual de cómo sería el nuevo login
-// --- LÓGICA DE INICIO DE SESIÓN (portal.html) ---
+    // --- 1. INICIALIZAR SUPABASE ---
+    const supabaseUrl = 'TU_URL_DE_SUPABASE';
+    const supabaseKey = 'TU_ANON_KEY_DE_SUPABASE';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // --- LÓGICA DE INICIO DE SESIÓN (portal.html) ---
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
         formLogin.addEventListener('submit', async function(e) {
-            e.preventDefault(); // Evita que la página se recargue
+            e.preventDefault();
             
-            // 1. Obtener lo que el usuario ha escrito en el formulario
             const usuarioInput = document.getElementById('login-user').value.trim();
             const passInput = document.getElementById('login-pass').value.trim();
             
             try {
-                // 2. Descargar y leer el archivo usuarios.json
                 const respuesta = await fetch('usuarios.json');
-                
-                // Comprobamos si hubo un error al leer el archivo (por ejemplo, si no se encuentra)
-                if (!respuesta.ok) {
-                    throw new Error('No se pudo acceder al archivo de usuarios.');
-                }
+                if (!respuesta.ok) throw new Error('No se pudo acceder al archivo de usuarios.');
                 
                 const usuarios = await respuesta.json();
-                
-                // 3. Buscar en el JSON si existe alguien con ese usuario y contraseña
-                const empleadoValido = usuarios.find(
-                    emp => emp.user === usuarioInput && emp.pass === passInput
-                );
+                const empleadoValido = usuarios.find(emp => emp.user === usuarioInput && emp.pass === passInput);
 
                 if (empleadoValido) {
-                    // 4. ¡Login correcto! Guardamos la "sesión" en el navegador
                     localStorage.setItem('weazel_session', empleadoValido.user);
                     localStorage.setItem('weazel_role', empleadoValido.rol);
-                    localStorage.setItem('weazel_nombre', empleadoValido.nombre); // Guardamos el nombre real para mostrarlo bonito
+                    localStorage.setItem('weazel_nombre', empleadoValido.nombre);
                     
-                    // 5. Redirigir a la página correcta según su rol
-                    if (empleadoValido.rol === 'admin') {
-                        window.location.href = 'panel-directiva.html';
-                    } else if (empleadoValido.rol === 'empleado') {
-                        window.location.href = 'panel-empleado.html';
-                    }
+                    if (empleadoValido.rol === 'admin') window.location.href = 'panel-directiva.html';
+                    else if (empleadoValido.rol === 'empleado') window.location.href = 'panel-empleado.html';
                 } else {
-                    // El usuario o la contraseña no coinciden con el JSON
                     alert('❌ Credenciales incorrectas. Comprueba tu usuario y contraseña.');
                 }
-                
             } catch (error) {
-                // Si falla la conexión o hay un error de lectura
                 console.error("Error en el login:", error);
                 alert('⚠️ Error de conexión con la base de datos de usuarios.');
             }
         });
     }
-   // --- LÓGICA DEL PANEL DE EMPLEADO (panel-empleado.html) ---
+
+    // --- LÓGICA DEL PANEL DE EMPLEADO (panel-empleado.html) ---
     const panelFichaje = document.getElementById('panel-fichaje');
     if (panelFichaje) {
         const sessionUser = localStorage.getItem('weazel_session');
         const sessionRole = localStorage.getItem('weazel_role');
-        const sessionNombre = localStorage.getItem('weazel_nombre') || sessionUser; // Usamos el nombre bonito si existe
+        const sessionNombre = localStorage.getItem('weazel_nombre') || sessionUser;
         
-        // Comprobar seguridad
         if (!sessionUser || sessionRole !== 'empleado') {
             window.location.href = 'portal.html';
-            return; // Detenemos la ejecución aquí
+            return;
         }
 
         document.getElementById('nombre-empleado-display').textContent = sessionNombre;
-        
-        // --- 🟢 SOLUCIÓN AQUÍ ---
-        // 1. Obtenemos los empleados de la memoria, si no hay nada, creamos un objeto vacío
-        let empleados = JSON.parse(localStorage.getItem('weazel_employees')) || {};
-        
-        // 2. Si el usuario que ha entrado NO tiene registro de horas aún, se lo inicializamos
-        if (!empleados[sessionUser]) {
-            empleados[sessionUser] = {
-                enServicio: false,
-                clockInTime: null,
-                totalSeconds: 0
-            };
-            // Guardamos el nuevo empleado vacío en la memoria del navegador
-            localStorage.setItem('weazel_employees', JSON.stringify(empleados));
-        }
 
-        // Ahora sí, miData siempre existirá sin dar errores
-        let miData = empleados[sessionUser];
-        // -----------------------
+        // 1. Cargar datos del empleado desde Supabase
+        let miData = { user_id: sessionUser, enServicio: false, clockInTime: null, totalSeconds: 0 };
+        
+        const { data: dbData, error: dbError } = await supabase
+            .from('fichajes')
+            .select('*')
+            .eq('user_id', sessionUser)
+            .single();
+
+        if (dbData) {
+            miData = dbData;
+        } else if (dbError && dbError.code === 'PGRST116') {
+            // No existe el registro, lo creamos en Supabase
+            await supabase.from('fichajes').insert([miData]);
+        } else {
+            console.error("Error al conectar con Supabase:", dbError);
+        }
 
         const btnFichaje = document.getElementById('btn-fichaje');
         const estadoTexto = document.getElementById('estado-servicio');
@@ -115,9 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         updateUI();
-        setInterval(updateUI, 60000); 
+        setInterval(updateUI, 60000); // Actualiza la vista cada minuto
 
-        btnFichaje.addEventListener('click', function() {
+        // Actualizar Supabase al hacer click
+        btnFichaje.addEventListener('click', async function() {
+            btnFichaje.disabled = true; // Evitar doble click rápido
+            btnFichaje.textContent = 'Actualizando...';
+
             if (!miData.enServicio) {
                 miData.enServicio = true;
                 miData.clockInTime = Date.now();
@@ -128,24 +115,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 miData.enServicio = false;
                 miData.clockInTime = null;
             }
-            empleados[sessionUser] = miData;
-            localStorage.setItem('weazel_employees', JSON.stringify(empleados));
+
+            // Guardar en Supabase
+            await supabase.from('fichajes').update({
+                enServicio: miData.enServicio,
+                clockInTime: miData.clockInTime,
+                totalSeconds: miData.totalSeconds
+            }).eq('user_id', sessionUser);
+
+            btnFichaje.disabled = false;
             updateUI();
         });
 
-        btnLogout.addEventListener('click', function() {
+        btnLogout.addEventListener('click', async function() {
             if (miData.enServicio) {
                 const workedSeconds = Math.floor((Date.now() - miData.clockInTime) / 1000);
                 miData.totalSeconds += workedSeconds;
                 miData.enServicio = false;
                 miData.clockInTime = null;
-                empleados[sessionUser] = miData;
-                localStorage.setItem('weazel_employees', JSON.stringify(empleados));
-                alert("Has sido desfichado al cerrar sesión para guardar tus horas.");
+                
+                await supabase.from('fichajes').update({
+                    enServicio: miData.enServicio,
+                    clockInTime: miData.clockInTime,
+                    totalSeconds: miData.totalSeconds
+                }).eq('user_id', sessionUser);
+                
+                alert("Has sido desfichado al cerrar sesión para guardar tus horas en la nube.");
             }
-            localStorage.removeItem('weazel_session');
-            localStorage.removeItem('weazel_role');
-            localStorage.removeItem('weazel_nombre'); // Limpiamos también el nombre
+            localStorage.clear(); // Limpia toda la sesión
             window.location.href = 'portal.html';
         });
     }
@@ -156,109 +153,75 @@ document.addEventListener('DOMContentLoaded', () => {
         const sessionUser = localStorage.getItem('weazel_session');
         const sessionRole = localStorage.getItem('weazel_role');
 
-        // Expulsar si no es la directiva
         if (sessionRole !== 'admin') {
             window.location.href = 'portal.html';
             return;
         }
 
         const tbodyEmpleados = document.getElementById('lista-empleados');
-        const formNuevoEmpleado = document.getElementById('form-nuevo-empleado');
         const contadorEmpleados = document.getElementById('contador-empleados');
+        // NOTA: He eliminado el formNuevoEmpleado de aquí porque si usas usuarios.json para el login, 
+        // crear cuentas en base de datos sin añadirlas al JSON rompería el inicio de sesión.
 
         async function cargarTablaEmpleados() {
-            tbodyEmpleados.innerHTML = '';
+            tbodyEmpleados.innerHTML = '<tr><td colspan="5">Cargando datos desde la nube...</td></tr>';
             
-            // 1. Obtener empleados del localStorage de forma segura (para no crashear si está vacío)
-            let empleadosLocales = JSON.parse(localStorage.getItem('weazel_employees')) || {};
-            
-            // 2. Obtener la plantilla base desde usuarios.json
+            // 1. Obtener horas de Supabase
+            const { data: empleadosDB, error } = await supabase.from('fichajes').select('*');
+            let mapaHoras = {};
+            if (empleadosDB) {
+                empleadosDB.forEach(emp => { mapaHoras[emp.user_id] = emp; });
+            }
+
+            // 2. Obtener plantilla de usuarios.json
             let usuariosBase = [];
             try {
                 const respuesta = await fetch('usuarios.json');
-                if (respuesta.ok) {
-                    usuariosBase = await respuesta.json();
-                }
+                if (respuesta.ok) usuariosBase = await respuesta.json();
             } catch (e) {
-                console.error("No se pudo cargar usuarios.json en la vista de directiva", e);
+                console.error("Error al cargar JSON", e);
             }
 
-            // 3. Crear una lista combinada (JSON + Creados a mano)
-            let listaFinal = {};
-            
-            // Primero metemos a los del JSON
-            usuariosBase.forEach(u => {
-                if (u.rol === 'empleado') {
-                    // Si ya ha fichado, cogemos sus horas. Si no, datos a 0.
-                    listaFinal[u.user] = empleadosLocales[u.user] || {
-                        enServicio: false,
-                        clockInTime: null,
-                        totalSeconds: 0
-                    };
-                    // Guardamos info extra para mostrar en la tabla
-                    listaFinal[u.user].isFromJSON = true;
-                    listaFinal[u.user].nombreReal = u.nombre;
-                    listaFinal[u.user].password = u.pass;
-                }
-            });
-
-            // Luego añadimos a los que se hayan creado a mano desde este mismo panel
-            for (const [user, data] of Object.entries(empleadosLocales)) {
-                if (!listaFinal[user]) {
-                    listaFinal[user] = data;
-                    listaFinal[user].nombreReal = user; 
-                    listaFinal[user].isFromJSON = false;
-                }
-            }
-
+            tbodyEmpleados.innerHTML = '';
             let total = 0;
 
-            // 4. Dibujar la tabla
-            for (const [user, data] of Object.entries(listaFinal)) {
-                total++;
-                // Calcular horas trabajadas en directo
-                let activeSeconds = 0;
-                if (data.enServicio && data.clockInTime) {
-                    activeSeconds = Math.floor((Date.now() - data.clockInTime) / 1000);
-                }
-                const totalSecs = (data.totalSeconds || 0) + activeSeconds;
-                const hours = Math.floor(totalSecs / 3600);
-                const minutes = Math.floor((totalSecs % 3600) / 60);
-
-                const estado = data.enServicio ? '🟢 Trabajando' : '⚫ Libre';
-                const nombreMostrar = data.nombreReal || user;
-                const passMostrar = data.password || 'Oculta/Manual';
-
-                // Si viene del JSON, no dejamos borrarlo desde la web
-                const botonBorrar = data.isFromJSON 
-                    ? `<button class="btn btn-sm" disabled style="opacity: 0.5; cursor: not-allowed;" title="Edita el archivo usuarios.json para borrarlo">Base de Datos</button>`
-                    : `<button class="btn btn-sm btn-borrar" data-user="${user}">Despedir / Borrar</button>`;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${nombreMostrar}</strong><br><small style="color:gray;">${user}</small></td>
-                    <td style="color: gray;">${passMostrar}</td>
-                    <td>${estado}</td>
-                    <td style="color: var(--rojo-weazel); font-weight: bold;">${hours}h ${minutes}m</td>
-                    <td>${botonBorrar}</td>
-                `;
-                tbodyEmpleados.appendChild(tr);
-            }
-            contadorEmpleados.textContent = total;
-
-            // Dar funcionalidad a los botones de borrar (solo para manuales)
-            document.querySelectorAll('.btn-borrar').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const userToDel = this.getAttribute('data-user');
-                    if(confirm(`¿Estás seguro de que quieres despedir y borrar la cuenta local de ${userToDel}? Se perderán todas sus horas.`)) {
-                        let empDB = JSON.parse(localStorage.getItem('weazel_employees')) || {};
-                        delete empDB[userToDel];
-                        localStorage.setItem('weazel_employees', JSON.stringify(empDB));
-                        cargarTablaEmpleados();
+            // 3. Cruzar datos y pintar tabla
+            usuariosBase.forEach(u => {
+                if (u.rol === 'empleado') {
+                    total++;
+                    let dataHoras = mapaHoras[u.user] || { enServicio: false, clockInTime: null, totalSeconds: 0 };
+                    
+                    let activeSeconds = 0;
+                    if (dataHoras.enServicio && dataHoras.clockInTime) {
+                        activeSeconds = Math.floor((Date.now() - dataHoras.clockInTime) / 1000);
                     }
-                });
+                    const totalSecs = dataHoras.totalSeconds + activeSeconds;
+                    const hours = Math.floor(totalSecs / 3600);
+                    const minutes = Math.floor((totalSecs % 3600) / 60);
+
+                    const estado = dataHoras.enServicio ? '🟢 Trabajando' : '⚫ Libre';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${u.nombre}</strong><br><small style="color:gray;">${u.user}</small></td>
+                        <td style="color: gray;">${u.pass}</td>
+                        <td>${estado}</td>
+                        <td style="color: var(--rojo-weazel); font-weight: bold;">${hours}h ${minutes}m</td>
+                        <td><button class="btn btn-sm" disabled style="opacity:0.5;" title="Edita el JSON para borrar">Protegido</button></td>
+                    `;
+                    tbodyEmpleados.appendChild(tr);
+                }
             });
+            contadorEmpleados.textContent = total;
         }
+
+        cargarTablaEmpleados();
+
+        document.getElementById('btn-logout-dir').addEventListener('click', function() {
+            localStorage.clear();
+            window.location.href = 'portal.html';
+        });
+    }
 
         // Cargar tabla al iniciar
         cargarTablaEmpleados();
