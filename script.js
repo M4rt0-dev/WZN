@@ -2,10 +2,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
     // --- 1. INICIALIZAR SUPABASE ---
-    const supabaseUrl = 'https://zokaarirkqourkkfmkso.supabase.co';
-    const supabaseKey = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
+    let supabase = null;
+    
+    // Solo inicializa Supabase si la librería existe en la página
+    if (window.supabase) {
+        const supabaseUrl = 'https://zokaarirkqourkkfmkso.supabase.co';
+        const supabaseKey = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
+        supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    }
     // --- 2. LÓGICA DE INICIO DE SESIÓN (portal.html) ---
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
@@ -262,49 +266,61 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- 5. LÓGICA DEL BUZÓN ANÓNIMO Y ANUNCIOS (EmailJS) ---
-    const formBuzon = document.getElementById('form-buzon');
-    if (formBuzon) {
-        formBuzon.addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            const btnSubmit = this.querySelector('button[type="submit"]');
-            btnSubmit.textContent = 'Enviando...'; 
-            btnSubmit.disabled = true;
 
-            emailjs.sendForm('service_a6y2ih9', 'template_9887dpi', this)
-                .then(() => {
-                    alert('¡El chivatazo ha sido enviado de forma anónima a la redacción!');
-                    this.reset();
-                    btnSubmit.textContent = 'Enviar Correo a Redacción';
-                    btnSubmit.disabled = false;
-                }, (err) => {
-                    alert('Hubo un error al enviar el correo. Revisa la consola.');
-                    console.error(err);
-                    btnSubmit.textContent = 'Enviar Correo a Redacción';
-                    btnSubmit.disabled = false;
-                });
-        });
-    }
+// Buzón Anónimo (portal.html)
+const formBuzon = document.getElementById('form-buzon');
+if (formBuzon) {
+    formBuzon.addEventListener('submit', function(e) {
+        e.preventDefault(); // Evita que la página se recargue
+        
+        const btnSubmit = this.querySelector('button[type="submit"]');
+        const textoOriginal = btnSubmit.textContent;
+        btnSubmit.textContent = 'Enviando...'; 
+        btnSubmit.disabled = true; // Bloquea el botón para evitar doble envío
 
-    const formBuzon1 = document.getElementById('form-buzon1');
-    if (formBuzon1) {
-        formBuzon1.addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            const btnSubmit = this.querySelector('button[type="submit"]');
-            btnSubmit.textContent = 'Enviando...'; 
-            btnSubmit.disabled = true;
+        // Asegúrate de que estos IDs son los correctos en tu cuenta de EmailJS
+        emailjs.sendForm('service_a6y2ih9', 'template_9887dpi', this)
+            .then(() => {
+                alert('¡El chivatazo ha sido enviado de forma anónima a la redacción!');
+                this.reset(); // Limpia el formulario
+            })
+            .catch((err) => {
+                alert('Hubo un error al enviar el correo. Revisa la consola.');
+                console.error("Error de EmailJS:", err);
+            })
+            .finally(() => {
+                // Pase lo que pase (éxito o error), restaura el botón
+                btnSubmit.textContent = textoOriginal;
+                btnSubmit.disabled = false;
+            });
+    });
+}
 
-            emailjs.sendForm('service_a6y2ih9', 'template_dh8tpdk', this)
-                .then(() => {
-                    alert('¡Tu correo ha sido enviado con éxito!');
-                    this.reset();
-                    btnSubmit.textContent = 'Enviar solicitud de publicación';
-                    btnSubmit.disabled = false;
-                }, (err) => {
-                    alert('Hubo un error al enviar el correo. Revisa la consola.');
-                    console.error(err);
-                    btnSubmit.textContent = 'Enviar solicitud de publicación';
-                    btnSubmit.disabled = false;
-                });
-        });
-    }
+// Publicar Anuncio (anuncios.html)
+const formBuzon1 = document.getElementById('form-buzon1');
+if (formBuzon1) {
+    formBuzon1.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        
+        const btnSubmit = this.querySelector('button[type="submit"]');
+        const textoOriginal = btnSubmit.textContent;
+        btnSubmit.textContent = 'Enviando...'; 
+        btnSubmit.disabled = true;
+
+        // Asegúrate de que estos IDs son los correctos en tu cuenta de EmailJS
+        emailjs.sendForm('service_a6y2ih9', 'template_dh8tpdk', this)
+            .then(() => {
+                alert('¡Tu solicitud de anuncio ha sido enviada con éxito!');
+                this.reset();
+            })
+            .catch((err) => {
+                alert('Hubo un error al enviar el correo. Revisa la consola.');
+                console.error("Error de EmailJS:", err);
+            })
+            .finally(() => {
+                btnSubmit.textContent = textoOriginal;
+                btnSubmit.disabled = false;
+            });
+    });
+}
 });
