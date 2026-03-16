@@ -11,5 +11,6 @@
   { "user": "Yuki_Murakami", "pass": "WZN_yuki", "nombre": "Yuki Murakami", "rol": "empleado" },
   { "user": "Jeremias_Vargas", "pass": "WZN_jeremias", "nombre": "Jeremias Vargas", "rol": "empleado" },
   { "user": "Raul_Vargas", "pass": "WZN_raul", "nombre": "Raul Vargas", "rol": "empleado" },
-  { "user": "Aren_Hagen", "pass": "WZN_aren", "nombre": "Aren Hagen", "rol": "empleado" }
+  { "user": "Aren_Hagen", "pass": "WZN_aren", "nombre": "Aren Hagen", "rol": "empleado" },
+  { "user": "Gabriela_Garcia", "pass": "WZN_gabriela", "nombre": "Gabriela Garcia", "rol": "empleado" }
 ]
