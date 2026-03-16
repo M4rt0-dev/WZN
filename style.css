@@ -258,3 +258,115 @@ footer {
     background-color: var(--rojo-weazel);
     color: white;
 }
+
+/* Estilos específicos para la página de tarifas */
+.precio-lista {
+    list-style: none;
+    margin-top: 15px;
+}
+
+.precio-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #444;
+}
+
+.precio-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.precio-texto {
+    flex-grow: 1;
+    padding-right: 15px;
+}
+
+.precio-tag {
+    background-color: var(--rojo-weazel);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.precio-desc {
+    font-size: 0.85rem;
+    color: var(--texto-gris);
+    margin-top: 3px;
+    line-height: 1.4;
+}
+
+.institucional-border {
+    border-top-color: #007bff !important; /* Toque azul para diferenciar LSPD/EMS */
+}
+
+.institucional-border h3 {
+    color: #007bff !important;
+}
+
+/* === MENÚ DESPLEGABLE === */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* El menú oculto por defecto */
+nav ul .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--gris-oscuro); /* Fondo oscuro Weazel */
+    min-width: 170px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.6);
+    z-index: 1001;
+    border-top: 3px solid var(--rojo-weazel);
+    border-radius: 0 0 5px 5px;
+    top: 100%; /* Lo coloca justo debajo del nav */
+    left: 0;
+    flex-direction: column; /* Apila los enlaces en vertical */
+    padding: 0;
+    gap: 0;
+}
+
+/* Mostrar el menú al pasar el ratón */
+.dropdown:hover .dropdown-content {
+    display: block; /* Muestra el menú */
+}
+
+/* Estilos de las opciones del desplegable */
+.dropdown-content li {
+    width: 100%;
+}
+
+.dropdown-content li a {
+    color: var(--texto-blanco);
+    padding: 12px 16px;
+    display: block;
+    text-align: left;
+    font-weight: 400;
+    border-bottom: 1px solid #333;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Quitar el borde al último elemento */
+.dropdown-content li:last-child a {
+    border-bottom: none;
+}
+
+/* Efecto hover dentro del desplegable */
+.dropdown-content li a:hover {
+    background-color: var(--rojo-weazel);
+    color: #fff !important;
+}
+
+/* Mantener iluminado "Contenido" cuando el ratón está encima del desplegable */
+.dropdown:hover .dropbtn {
+    color: #000 !important;
+}
