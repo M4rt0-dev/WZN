@@ -313,60 +313,78 @@ footer {
 }
 
 /* === MENÚ DESPLEGABLE === */
+/* === MENÚ DESPLEGABLE (CORREGIDO Y CENTRADO) === */
 .dropdown {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
 }
 
 /* El menú oculto por defecto */
-nav ul .dropdown-content {
-    display: none;
+nav ul ul.dropdown-content {
+    display: none; /* Oculto por defecto */
     position: absolute;
-    background-color: var(--gris-oscuro); /* Fondo oscuro Weazel */
-    min-width: 170px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.6);
+    background-color: var(--negro-fondo);
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.8);
     z-index: 1001;
     border-top: 3px solid var(--rojo-weazel);
     border-radius: 0 0 5px 5px;
-    top: 100%; /* Lo coloca justo debajo del nav */
+    
+    /* Ubicación exacta: lo empujamos para que salga justo debajo de la barra roja */
+    top: calc(100% + 1rem); 
+    left: 50%;
+    transform: translateX(-50%); /* Lo centra perfectamente con la palabra "Contenido" */
+    
+    /* Anular la herencia del menú principal */
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* TRUCO MAGICO: Puente invisible para no perder el ratón al bajar por el hueco */
+nav ul ul.dropdown-content::before {
+    content: "";
+    position: absolute;
+    top: -1rem; /* Cubre exactamente el hueco que hemos bajado */
     left: 0;
-    flex-direction: column; /* Apila los enlaces en vertical */
-    padding: 0;
-    gap: 0;
+    width: 100%;
+    height: 1rem;
+    background: transparent;
 }
 
 /* Mostrar el menú al pasar el ratón */
-.dropdown:hover .dropdown-content {
-    display: block; /* Muestra el menú */
+.dropdown:hover ul.dropdown-content {
+    display: flex !important; /* Mostramos como lista vertical */
 }
 
-/* Estilos de las opciones del desplegable */
-.dropdown-content li {
+/* Estilos de las opciones del submenú */
+nav ul ul.dropdown-content li {
     width: 100%;
+    list-style: none;
 }
 
-.dropdown-content li a {
-    color: var(--texto-blanco);
-    padding: 12px 16px;
-    display: block;
-    text-align: left;
-    font-weight: 400;
-    border-bottom: 1px solid #333;
-    transition: background-color 0.2s, color 0.2s;
+nav ul ul.dropdown-content li a {
+    color: var(--texto-blanco) !important;
+    padding: 15px 20px !important;
+    display: block !important;
+    text-align: center;
+    font-weight: 400 !important;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #222 !important;
+    transition: all 0.3s ease !important;
 }
 
-/* Quitar el borde al último elemento */
-.dropdown-content li:last-child a {
-    border-bottom: none;
+/* Quitar el borde a la última opción para que no se vea feo */
+nav ul ul.dropdown-content li:last-child a {
+    border-bottom: none !important;
+    border-radius: 0 0 5px 5px;
 }
 
-/* Efecto hover dentro del desplegable */
-.dropdown-content li a:hover {
-    background-color: var(--rojo-weazel);
-    color: #fff !important;
-}
-
-/* Mantener iluminado "Contenido" cuando el ratón está encima del desplegable */
-.dropdown:hover .dropbtn {
-    color: #000 !important;
+/* Efecto hover guapo dentro del desplegable */
+nav ul ul.dropdown-content li a:hover {
+    background-color: var(--rojo-weazel) !important;
+    color: #ffffff !important;
+    letter-spacing: 1px; /* Pequeña animación expansiva */
 }
