@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // 2. Obtener lista de empleados del JSON
-            let usuariosBase = [];
+            let usuariosBase =[];
             try {
                 const urlSinCache = 'usuarios.json?t=' + new Date().getTime();
                 const respuesta = await fetch(urlSinCache, { cache: 'no-store' });
@@ -216,6 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     total++;
                     let dataHoras = mapaHoras[u.user] || { enServicio: false, clockInTime: null, totalSeconds: 0 };
                     
+                    // Calcular el tiempo en servicio actual extraído de la BD
                     let activeSeconds = 0;
                     if (dataHoras.enServicio && dataHoras.clockInTime) {
                         activeSeconds = Math.floor((Date.now() - dataHoras.clockInTime) / 1000);
@@ -232,7 +233,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td style="color: gray;">${u.pass}</td>
                         <td>${estado}</td>
                         <td style="color: var(--rojo-weazel); font-weight: bold;">${hours}h ${minutes}m</td>
-                        <td><button class="btn btn-sm" disabled style="opacity:0.5;" title="Edita el archivo JSON para modificar">Protegido</button></td>
+                        <td>
+                            <button class="btn btn-sm btn-reset" data-user="${u.user}" data-enservicio="${dataHoras.enServicio}" style="background-color: var(--rojo-weazel); color: white; cursor: pointer; border:none; padding: 5px 10px; border-radius: 4px;">
+                                Poner a 0
+                            </button>
+                        </td>
                     `;
                     tbodyEmpleados.appendChild(tr);
                 }
@@ -243,6 +248,43 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             
             contadorEmpleados.textContent = total;
+
+            // 4. Lógica para los botones de Poner a 0
+            const botonesReset = document.querySelectorAll('.btn-reset');
+            botonesReset.forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const userId = this.getAttribute('data-user');
+                    const enServicio = this.getAttribute('data-enservicio') === 'true';
+
+                    if (confirm(`¿Estás seguro de que deseas poner a 0 las horas de ${userId}?`)) {
+                        this.textContent = 'Actualizando...';
+                        this.disabled = true;
+
+                        // Ponemos las horas a 0. Si el empleado está en servicio en este momento, 
+                        // también reseteamos su inicio de turno a AHORA para que no sume minutos atrasados.
+                        const updates = { totalSeconds: 0 };
+                        if (enServicio) {
+                            updates.clockInTime = Date.now();
+                        }
+
+                        // Actualizar la base de datos de Supabase
+                        const { error } = await supabase
+                            .from('fichajes')
+                            .update(updates)
+                            .eq('user_id', userId);
+
+                        if (error) {
+                            console.error("Error al resetear horas:", error);
+                            alert("Hubo un error al actualizar la base de datos.");
+                            this.textContent = 'Poner a 0';
+                            this.disabled = false;
+                        } else {
+                            // Volvemos a renderizar la tabla para mostrar los cambios instantáneamente
+                            cargarTablaEmpleados();
+                        }
+                    }
+                });
+            });
         }
 
         // Cargar tabla al entrar
