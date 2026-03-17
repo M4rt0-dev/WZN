@@ -323,4 +323,33 @@ if (formBuzon1) {
             });
     });
 }
+// --- 6. LÓGICA DEL BUZÓN DE SUGERENCIAS (EmailJS) ---
+
+const formSugerencias = document.getElementById('form-sugerencias');
+if (formSugerencias) {
+    formSugerencias.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        
+        const btnSubmit = this.querySelector('button[type="submit"]');
+        const textoOriginal = btnSubmit.textContent;
+        btnSubmit.textContent = 'Enviando...'; 
+        btnSubmit.disabled = true;
+
+        // NOTA: Reemplaza 'template_sugerencias' con el ID real de la plantilla que crees en EmailJS
+        // El Service ID ('service_a6y2ih9') es el mismo que ya usabas en los otros formularios.
+        emailjs.sendForm('service_a6y2ih9', 'template_dh8tpdk', this)
+            .then(() => {
+                alert('¡Gracias por tu aportación! Tu sugerencia ha sido enviada a la directiva de Weazel News.');
+                this.reset();
+            })
+            .catch((err) => {
+                alert('Hubo un error al enviar tu sugerencia. Por favor, inténtalo más tarde.');
+                console.error("Error de EmailJS:", err);
+            })
+            .finally(() => {
+                btnSubmit.textContent = textoOriginal;
+                btnSubmit.disabled = false;
+            });
+    });
+}
 });
