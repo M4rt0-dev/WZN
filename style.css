@@ -347,10 +347,10 @@ nav ul ul.dropdown-content {
 nav ul ul.dropdown-content::before {
     content: "";
     position: absolute;
-    top: -1rem; /* Cubre exactamente el hueco que hemos bajado */
+    top: -2rem; /* Cubre exactamente el hueco que hemos bajado */
     left: 0;
     width: 100%;
-    height: 1rem;
+    height: 3rem;
     background: transparent;
 }
 
@@ -387,4 +387,204 @@ nav ul ul.dropdown-content li a:hover {
     background-color: var(--rojo-weazel) !important;
     color: #ffffff !important;
     letter-spacing: 1px; /* Pequeña animación expansiva */
+}
+
+/*borrar de aqui a abajo*/
+/*borrar de aqui a abajo*/
+/*borrar de aqui a abajo*/
+/*borrar de aqui a abajo*/
+/*borrar de aqui a abajo*/
+/*borrar de aqui a abajo*/
+/*borrar de aqui a abajo*/
+/*borrar de aqui a abajo*/
+/*borrar de aqui a abajo*/
+
+
+/* === GALERÍA: ACORDEÓN + TV NEWS === */
+
+/* 1. ESTILOS DEL ACORDEÓN DESPLEGABLE */
+.accordion-btn {
+    background-color: var(--gris-oscuro);
+    color: var(--texto-blanco);
+    cursor: pointer;
+    padding: 18px 25px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: background-color 0.3s ease;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    border-top: 3px solid var(--rojo-weazel);
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px 5px 0 0;
+}
+
+.accordion-btn:hover, .accordion-btn.active {
+    background-color: #2a2a2a;
+}
+
+.accordion-btn::after {
+    content: '\25BC'; 
+    font-size: 1rem;
+    color: var(--rojo-weazel);
+    transition: transform 0.3s ease;
+}
+
+.accordion-btn.active::after {
+    transform: rotate(-180deg);
+}
+
+.accordion-content {
+    background-color: #0a0a0a;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    border-radius: 0 0 5px 5px;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+}
+
+.accordion-btn.active + .accordion-content {
+    margin-bottom: 20px;
+}
+
+/* 2. ESTILOS DEL REPRODUCTOR DE TV (Dentro del Acordeón) */
+.tv-gallery-section {
+    padding: 20px;
+}
+
+.tv-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 2px solid #222;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.tv-btn {
+    background-color: rgba(211, 47, 47, 0.8);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    padding: 15px 10px;
+    position: absolute;
+    z-index: 100;
+    transition: background 0.3s;
+    height: 100%;
+}
+
+.tv-btn:hover {
+    background-color: var(--rojo-oscuro);
+}
+
+.prev-btn { left: 0; }
+.next-btn { right: 0; }
+
+.tv-track-container {
+    width: 100%;
+    overflow: hidden;
+    scroll-behavior: smooth;
+}
+
+.tv-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.tv-slide {
+    min-width: 100%;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+}
+
+.tv-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+}
+
+/* 3. EL FALDÓN DE NOTICIAS (LOWER THIRD) */
+.lower-third {
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.9);
+    font-family: 'Oswald', sans-serif;
+}
+
+.lt-top {
+    display: flex;
+    align-items: stretch;
+}
+
+.lt-live {
+    background-color: var(--rojo-weazel);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.lt-headline {
+    background-color: rgba(15, 15, 15, 0.95);
+    color: white;
+    font-size: 1.5rem;
+    padding: 5px 20px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    border-top: 2px solid var(--rojo-weazel);
+}
+
+.lt-bottom {
+    background-color: white;
+    color: black;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 6px 0;
+    overflow: hidden; 
+    white-space: nowrap;
+    border-bottom: 3px solid var(--rojo-weazel);
+}
+
+.ticker-move {
+    display: inline-block;
+    padding-left: 100%; 
+    animation: ticker-slide 20s linear infinite;
+}
+
+.ticker-move span {
+    color: var(--rojo-weazel);
+    margin: 0 10px;
+}
+
+@keyframes ticker-slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+@media (max-width: 768px) {
+    .lt-live { font-size: 0.9rem; padding: 5px 10px; }
+    .lt-headline { font-size: 1.1rem; padding: 5px 10px; }
+    .lt-bottom { font-size: 0.9rem; }
+    .tv-btn { font-size: 1.2rem; padding: 10px 5px; }
 }
