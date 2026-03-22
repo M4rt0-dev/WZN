@@ -7,11 +7,7 @@
   { "user": "Apapurcio_Buenafuente", "pass": "WZN_apapurcio", "nombre": "Apapurcio Buenafuente", "rol": "empleado" },
   { "user": "Mateo_Mancini", "pass": "WZN_mateo", "nombre": "Mateo Mancini", "rol": "empleado" },
   { "user": "Benyto_Frailes", "pass": "WZN_benyto", "nombre": "Benyto Frailes", "rol": "empleado" },
-  { "user": "Lucy_Taylor", "pass": "WZN_lucy", "nombre": "Lucy Taylor", "rol": "empleado" },
   { "user": "Yuki_Murakami", "pass": "WZN_yuki", "nombre": "Yuki Murakami", "rol": "empleado" },
-  { "user": "Jeremias_Vargas", "pass": "WZN_jeremias", "nombre": "Jeremias Vargas", "rol": "empleado" },
-  { "user": "Raul_Vargas", "pass": "WZN_raul", "nombre": "Raul Vargas", "rol": "empleado" },
   { "user": "Aren_Hagen", "pass": "WZN_aren", "nombre": "Aren Hagen", "rol": "empleado" },
   { "user": "Gabriela_Garcia", "pass": "WZN_gabriela", "nombre": "Gabriela Garcia", "rol": "empleado" },
-  { "user": "Yeray_Fernandez", "pass": "WZN_yeray", "nombre": "Yeray Fernandez", "rol": "empleado" }
 ]
