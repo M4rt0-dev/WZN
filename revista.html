@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revista Semanal | Weazel News</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">WEAZEL NEWS</a>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            
+            <!-- MENÚ DESPLEGABLE -->
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Contenido ▼</a>
+                <ul class="dropdown-content">
+                    <li><a href="periodicos.html">Periódicos</a></li>
+                    <li><a href="revista.html" class="activo">Revista</a></li> <!-- NUEVO ENLACE -->
+                    <li><a href="podcasts.html">Podcasts</a></li>
+                    <li><a href="eventos.html">Eventos</a></li>
+                    <li><a href="galeria.html">Galería</a></li>
+                </ul>
+            </li>
+            <!-- FIN MENÚ DESPLEGABLE -->
+
+            <li><a href="equipo.html">Equipo</a></li>
+            <li><a href="portal.html">Portal Empleado</a></li>
+            <li><a href="anuncios.html">Anuncios Locales</a></li>
+            <li><a href="tarifas.html">Tarifas</a></li>
+            <li><a href="sugerencias.html">Sugerencias</a></li>
+        </ul>
+    </nav>
+
+    <header class="small-header">
+        <span class="alerta-roja">EDICIÓN ESPECIAL CADA VIERNES</span>
+        <h1>Revista Semanal</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2 class="titulo-seccion">El resumen de tu semana</h2>
+            <p style="color: var(--texto-gris); margin-bottom: 2.5rem; font-size: 1.1rem; max-width: 900px;">
+                Empieza el fin de semana informado y con estilo. Cada viernes lanzamos nuestra revista exclusiva: reportajes en profundidad, entrevistas, cotilleos, lo último en el mundo del motor y recomendaciones de ocio para disfrutar de Los Santos al máximo.
+            </p>
+
+            <div class="grid">
+                <!-- Tarjeta destacada para la próxima edición -->
+                <div class="card" style="border-top-color: #ff4081; position: relative;">
+                    <div style="position: absolute; top: -12px; right: -10px; background: #ff4081; padding: 2px 10px; border-radius: 3px; font-weight: bold; font-size: 0.8rem;">NUEVA</div>
+                    <h3 style="color: #ff4081;">Edición #3 - ¡Proximo Viernes!</h3>
+                    <p style="margin-bottom: 15px;">Nuestra rotativa ya está echando humo preparando la edición de esta semana. Entrevistas exclusivas, moda y la guía definitiva para tu finde.</p>
+                    <button class="btn" style="background-color: #ff4081; cursor: not-allowed; opacity: 0.8;" disabled>Disponible próximamente</button>
+                </div>
+
+                <div class="card" style="border-top-color: #ff4081; position: relative;">
+                    <div style="position: absolute; top: -12px; right: -10px; background: #ff4081; padding: 2px 10px; border-radius: 3px; font-weight: bold; font-size: 0.8rem;">NUEVA</div>
+                    <h3 style="color: #ff4081;">Edición #2 - ¡Este Viernes!</h3>
+                    <p style="margin-bottom: 15px;">Nuestra rotativa ya está echando humo preparando la edición de esta semana. Entrevistas exclusivas, moda y la guía definitiva para tu finde.</p>
+                    <button class="btn" style="background-color: #ff4081; cursor: not-allowed; opacity: 0.8;" disabled>Disponible próximamente</button>
+                </div>
+
+                <div class="card">
+                    <h3>Edición #1 - Malas Lenguas</h3>
+                    <p style="margin-bottom: 15px;">El estreno de nuestra revista. Los rostros más sonados de la primera semana, chisme, mascotas y el mundo del motor, todo en uno.</p>
+                    <a href="https://online.fliphtml5.com/weazelnewsevolucionls/pdeb/#p=1" class="btn">Leer Revista</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de llamada a la acción para anuncios -->
+        <section style="margin-top: -2rem;">
+            <div class="card" style="text-align: center; border: 2px dashed var(--rojo-weazel); max-width: 800px; margin: 0 auto;">
+                <h2>¿Quieres deslumbrar en nuestra portada?</h2>
+                <p style="margin-top: 15px; margin-bottom: 25px; color: var(--texto-gris);">
+                    Ofrecemos espacios de publicidad premium a todo color, publirreportajes a medida y menciones destacadas para que tu negocio o evento brille frente a miles de ciudadanos cada fin de semana.
+                </p>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="tarifas.html" class="btn">Ver Catálogo Comercial</a>
+                    <a href="anuncios.html" class="btn" style="background-color: transparent; border: 1px solid var(--rojo-weazel); color: var(--texto-blanco);">Contactar con Ventas</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h2>WEAZEL NEWS</h2>
+        <p>&copy; 2026 Weazel News Los Santos EVO. La verdad, al alcance de tu mano.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
