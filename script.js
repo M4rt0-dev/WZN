@@ -394,4 +394,50 @@ if (formSugerencias) {
             });
     });
 }
+
+// --- 7. LÓGICA DE LA GALERÍA FUSIONADA (ACORDEÓN + TV) ---
+
+    // A) Funcionalidad del Acordeón Desplegable
+    const accordions = document.querySelectorAll('.accordion-btn');
+    
+    accordions.forEach(acc => {
+        acc.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
+            
+            if (content.style.maxHeight) {
+                // Si está abierto, lo cierra
+                content.style.maxHeight = null;
+            } else {
+                // Si está cerrado, calcula el tamaño interior para abrirlo
+                // Añadimos un pequeño margen extra de seguridad para el reproductor TV
+                content.style.maxHeight = (content.scrollHeight + 50) + "px";
+            }
+        });
+    });
+
+    // B) Funcionalidad del Carrusel TV (Botones Izquierda / Derecha)
+    const carousels = document.querySelectorAll('.tv-carousel-wrapper');
+    
+    carousels.forEach(carousel => {
+        const trackContainer = carousel.querySelector('.tv-track-container');
+        const prevBtn = carousel.querySelector('.prev-btn');
+        const nextBtn = carousel.querySelector('.next-btn');
+
+        prevBtn.addEventListener('click', () => {
+            trackContainer.scrollBy({
+                left: -trackContainer.clientWidth, 
+                behavior: 'smooth'
+            });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            trackContainer.scrollBy({
+                left: trackContainer.clientWidth, 
+                behavior: 'smooth'
+            });
+        });
+    })
+});
+    
 });
