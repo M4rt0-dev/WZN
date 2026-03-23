@@ -393,8 +393,7 @@ if (formSugerencias) {
                 btnSubmit.disabled = false;
             });
     });
-}   
-});
+}
 // --- 7. LÓGICA DE LA GALERÍA FUSIONADA (ACORDEÓN + TV) ---
 
     // A) Funcionalidad del Acordeón Desplegable
