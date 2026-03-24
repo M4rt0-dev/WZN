@@ -25,7 +25,7 @@ Bienvenido al repositorio oficial de la plataforma web de **Weazel News**, dise�
 
 ## 🛠️ Tecnologías Utilizadas
 
-* **Frontend:** HTML5, CSS3, JavaScript (Vanilla).
+* **Frontend:** HTML5, CSS3, JavaScript.
 * **Almacenamiento Local:** `usuarios.json` para la base de datos de usuarios y `localStorage` para el manejo de sesiones.
 * **Backend / Base de Datos:** [Supabase](https://supabase.com/) (Para almacenar de forma persistente y en tiempo real el fichaje y las horas de los empleados).
 * **Envío de Correos:** [EmailJS](https://www.emailjs.com/) (Para el procesamiento de los formularios estáticos sin necesidad de un backend propio).
