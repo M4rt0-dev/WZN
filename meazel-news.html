@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEAZEL NEWS // CONSPIRATION CLUB</title>
+    <!-- Aquí se añade el icono para la pestaña del navegador -->
+    <link rel="icon" href="meazel-logo.png" type="image/png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&display=swap');
+
+        :root {
+            --bg-color: #030303;
+            --main-red: #c00000;
+            --main-green: #00ff00;
+            --text-muted: #888;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--main-red);
+            font-family: 'Courier Prime', monospace;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Efecto CRT Scanlines (Líneas de monitor viejo) */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 3;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px dashed var(--main-red);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Nuevo estilo para tu logo masónico */
+        .main-logo {
+            width: 160px; /* Tamaño del logo */
+            display: block;
+            margin: 0 auto 20px auto;
+            /* Este filtro invierte el fondo claro a oscuro y tiñe las líneas de verde para que encaje perfecto con el diseño */
+            filter: invert(1) sepia(1) hue-rotate(70deg) saturate(5) drop-shadow(0 0 8px var(--main-green));
+            mix-blend-mode: screen; /* Elimina los bordes del fondo de la imagen */
+        }
+
+        /* Efecto Glitch para el título */
+        .glitch {
+            font-family: 'VT323', monospace;
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 rgba(255,0,0,.75),
+                        -0.025em -0.05em 0 rgba(0,255,0,.75),
+                        0.025em 0.05em 0 rgba(0,0,255,.75);
+            animation: glitch 500ms infinite;
+            margin: 0;
+        }
+
+        .glitch span {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,.75), -0.025em -0.025em 0 rgba(0,255,0,.75), -0.025em -0.05em 0 rgba(0,0,255,.75); }
+        }
+
+        .nav-link {
+            color: var(--main-green);
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid var(--main-green);
+            padding: 5px 10px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--main-green);
+            color: black;
+            box-shadow: 0 0 10px var(--main-green);
+        }
+
+        /* Contenido de Noticias / Conspiraciones */
+        .terminal-text {
+            color: var(--main-green);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2rem;
+            background-color: var(--main-green);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* MODIFICACIÓN: Ocultar el grid al principio y añadir animación */
+        .news-grid {
+            display: none; /* Inicialmente oculto */
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .article {
+            border: 1px solid #333;
+            background-color: #0a0a0a;
+            padding: 15px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .article:hover {
+            border-color: var(--main-red);
+            box-shadow: inset 0 0 15px rgba(192, 0, 0, 0.2);
+        }
+
+        .article::before {
+            content: "[TOP SECRET]";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: var(--bg-color);
+            padding: 0 5px;
+            font-size: 0.8rem;
+            color: var(--main-red);
+        }
+
+        .article h2 {
+            margin: 10px 0;
+            font-size: 1.5rem;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .article p {
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .read-more {
+            color: var(--main-red);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+            color: white;
+        }
+
+        /* MODIFICACIÓN: Ocultar el footer al principio y añadir animación */
+        footer {
+            display: none; /* Inicialmente oculto */
+            margin-top: 50px;
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #555;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .alert {
+            color: red;
+            font-weight: bold;
+            animation: blink 2s infinite;
+        }
+
+        /* Animación para cuando aparezcan las cards */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Link de vuelta al WZN principal -->
+        <a href="index.html" class="nav-link">< BACK TO WZN ROOT</a>
+
+        <header>
+            <!-- Aquí se inserta el nuevo logo de imagen -->
+            <img src="./img-meazel/meazel-logo.png" alt="Símbolo Masónico M" class="main-logo">
+            
+            <h1 class="glitch" data-text="MEAZEL NEWS">MEAZEL NEWS</h1>
+            <h2>// MEAZEL CONSPIRATION CLUB //</h2>
+        </header>
+
+        <div class="terminal-text">
+            <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+
+        <div class="news-grid">
+
+            <article class="article">
+                <h2>Más allá de la fe, lo moralmente incorrecto</h2>
+                <p>Lugares de culto en la ciudad están siendo utilizados como fachada. Símbolos ocultos en los altares, reuniones de la élite y desapariciones de jóvenes catalogadas bajo extraños códigos en clave. El rastro lleva directamente a los clubes más exclusivos de Los Santos.</p>
+                <a href="mas-alla-de-la-fe.html" class="read-more">>> DESCENCRIPTAR ARCHIVO</a>
+            </article>
+
+            <article class="article">
+                <h2>Filtración: La Logia de Los Santos</h2>
+                <p>Documentos clasificados sugieren conexiones entre las logias masónicas locales y entidades no humanas. Planos subterráneos, simbología alienígena y silencio gubernamental. Revisa las fotografías filtradas de los escritorios de los altos mandos.</p>
+                <a href="filtracion-logia.html" class="read-more">>> DESCENCRIPTAR ARCHIVO</a>
+            </article>
+
+            <article class="article">
+                <h2>¿Quién es realmente el Admin?</h2>
+                <p>Análisis forense de los commits en GitHub sugieren que m4rt0-dev podría no ser humano. Patrones de tecleo revelan secuencias Fibonacci perfectas. ¿Es una IA que escapó de su sandbox?</p>
+                <a href="expediente-admin.html" class="read-more">>> DESCENCRIPTAR ARCHIVO</a>
+            </article>
+            
+            <article class="article">
+                <h2>El Incidente del Servidor 7</h2>
+                <p>Usuarios reportan voces en el código fuente durante las madrugadas. Los logs muestran conexiones IP desde coordenadas inexistentes en el Atlántico Norte. La administración lo niega, pero nosotros tenemos la verdad.</p>
+                <a href="servidor-7.html" class="read-more">>> DESCENCRIPTAR ARCHIVO</a>
+            </article>
+
+            <article class="article">
+                <h2>El Proyecto "Pigeon Drone" en la Deep Web</h2>
+                <p>Las palomas no son reales. Documentos filtrados del foro WZN confirman que el 40% de las aves en zonas urbanas son nodos repetidores de señal Wi-Fi militar. Lee el análisis completo de los chips encontrados.</p>
+                <a href="pigeon-drone.html" class="read-more">>> DESCENCRIPTAR ARCHIVO</a>
+            </article>
+            
+        </div>
+
+        <footer>
+            <p><span class="alert">WARNING:</span> TU DIRECCIÓN IP HA SIDO REGISTRADA POR ENTRAR AQUÍ.</p>
+            <p>TRUST NO ONE. THE TRUTH IS IN THE CODE.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Efecto máquina de escribir (Terminal)
+        const text = "Iniciando protocolo masónico... Conexión P2P establecida... Bienvenido al Club. Lo que leas aquí no debe salir de la logia. Ellos vigilan.";
+        let index = 0;
+        const speed = 50; // velocidad de escritura
+
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, speed);
+            } else {
+                // MODIFICACIÓN: Una vez termina de escribir el texto, mostramos las cards y el footer
+                setTimeout(() => {
+                    document.querySelector('.news-grid').style.display = 'flex';
+                    document.querySelector('footer').style.display = 'block';
+                }, 400); // 400ms de suspenso antes de que aparezcan
+            }
+        }
+
+        // Iniciar el efecto al cargar la página
+        window.onload = function() {
+            setTimeout(typeWriter, 1000);
+        };
+    </script>
+</body>
+</html>

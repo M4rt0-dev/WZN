@@ -1,14 +1,10 @@
 [
   { "user": "DirectivaWZN", "pass": "WZN123COntraSEna", "nombre": "Administrador", "rol": "admin" },
-  { "user": "Adrian_Blackwood", "pass": "WZN2026", "nombre": "Adrian Blackwood", "rol": "empleado" },
+  { "user": "Asher_Stark", "pass": "WZN2026", "nombre": "Asher Stark", "rol": "empleado" },
   { "user": "Monet_Basenji", "pass": "WZN_monet", "nombre": "Monet Basenji", "rol": "empleado" },
   { "user": "Elisa_Martinez", "pass": "WZN_elisa", "nombre": "Elisa Martinez", "rol": "empleado" },
   { "user": "Nikki_Bouwer", "pass": "WZN_nikki", "nombre": "Nikki Bouwer", "rol": "empleado" },
   { "user": "Apapurcio_Buenafuente", "pass": "WZN_apapurcio", "nombre": "Apapurcio Buenafuente", "rol": "empleado" },
   { "user": "Mateo_Mancini", "pass": "WZN_mateo", "nombre": "Mateo Mancini", "rol": "empleado" },
-  { "user": "Benyto_Frailes", "pass": "WZN_benyto", "nombre": "Benyto Frailes", "rol": "empleado" },
-  { "user": "Yuki_Murakami", "pass": "WZN_yuki", "nombre": "Yuki Murakami", "rol": "empleado" },
-  { "user": "Aren_Hagen", "pass": "WZN_aren", "nombre": "Aren Hagen", "rol": "empleado" },
-  { "user": "Daimond_Blackwood", "pass": "WZN_daimond", "nombre": "Daimond Blackwood", "rol": "empleado" },
-  { "user": "Kayden_Steward", "pass": "WZN_kayden", "nombre": "Kayden Steward", "rol": "empleado" }
+  { "user": "Aren_Hagen", "pass": "WZN_aren", "nombre": "Aren Hagen", "rol": "empleado" }
 ]

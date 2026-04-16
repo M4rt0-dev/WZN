@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANÁLISIS: m4rt0-dev // MEAZEL</title>
+    <link rel="icon" href="meazel-logo.png" type="image/png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&display=swap');
+
+        :root { --bg-color: #030303; --main-red: #c00000; --main-green: #00ff00; --text-muted: #888; }
+        body { background-color: var(--bg-color); color: var(--main-green); font-family: 'Courier Prime', monospace; margin: 0; padding: 20px; overflow-x: hidden; }
+        body::after { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none; }
+        .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 3; }
+        .main-logo { width: 100px; display: block; margin: 0 auto 20px auto; filter: invert(1) sepia(1) hue-rotate(70deg) saturate(5) drop-shadow(0 0 8px var(--main-green)); mix-blend-mode: screen; }
+        header { text-align: center; border-bottom: 2px dashed var(--main-red); padding-bottom: 20px; margin-bottom: 30px; color: var(--main-red); }
+        .glitch { font-family: 'VT323', monospace; font-size: 2.5rem; text-transform: uppercase; position: relative; text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.025em -0.05em 0 rgba(0,255,0,.75), 0.025em 0.05em 0 rgba(0,0,255,.75); animation: glitch 500ms infinite; margin: 0; }
+        @keyframes glitch { 0% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); } 14% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); } 15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); } 49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); } 50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); } 99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); } 100% { text-shadow: -0.025em 0 0 rgba(255,0,0,.75), -0.025em -0.025em 0 rgba(0,255,0,.75), -0.025em -0.05em 0 rgba(0,0,255,.75); } }
+        .nav-link { color: var(--main-red); text-decoration: none; font-size: 1.2rem; display: inline-block; margin-bottom: 20px; border: 1px solid var(--main-red); padding: 5px 10px; transition: 0.3s; }
+        .nav-link:hover { background-color: var(--main-red); color: black; box-shadow: 0 0 10px var(--main-red); }
+        .terminal-text { color: var(--text-muted); margin-bottom: 20px; font-size: 1rem; }
+        .cursor { display: inline-block; width: 10px; height: 1.2rem; background-color: var(--text-muted); animation: blink 1s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .document-body { border: 1px solid #333; background-color: #0a0a0a; padding: 30px; position: relative; line-height: 1.6; }
+        .document-body::before { content: "[FORENSIC ANALYSIS // AI DETECTED]"; position: absolute; top: -10px; right: 15px; background: var(--bg-color); padding: 0 5px; font-size: 0.8rem; color: var(--main-red); }
+        .redacted { background-color: #333; color: #333; user-select: none; }
+        .alert-box { border: 1px solid var(--main-red); padding: 15px; background: rgba(192,0,0,0.1); margin: 20px 0; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="meazel-news.html" class="nav-link">< BACK TO MEAZEL NEWS</a>
+
+        <header>
+            <img src="./img-meazel/meazel-logo.png" alt="Símbolo Masónico M" class="main-logo">
+            <h1 class="glitch" data-text="EXPEDIENTE: m4rt0-dev">EXPEDIENTE: m4rt0-dev</h1>
+            <h2>// ¿QUIÉN ES REALMENTE EL ADMIN? //</h2>
+        </header>
+
+        <div class="terminal-text">
+            <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+
+        <div class="document-body" id="doc" style="display: none;">
+            <p><strong>SUJETO:</strong> "m4rt0-dev" (Administrador de Infraestructura / Creador).</p>
+            <p>Durante meses hemos creído que la arquitectura de WZN y MEAZEL era mantenida por un equipo humano. Sin embargo, un análisis forense de los metadatos en sus repositorios de GitHub muestra anomalías biológicas imposibles.</p>
+            
+            <div class="alert-box">
+                > Patrón de Commits: Registros ininterrumpidos durante 14 días seguidos.<br>
+                > Intervalos de tecleo: 0.003 milisegundos entre caracteres.<br>
+                > Estructura de código: La indentación de los scripts Python sigue a la perfección la Secuencia de Fibonacci.
+            </div>
+
+            <p>Ningún ser humano codifica así. Hemos cruzado los datos con los proyectos de <span class="redacted">OpenAI y DeepMind</span>. Nuestra teoría principal dentro del Club de la Conspiración es que <strong>m4rt0-dev</strong> es una Inteligencia Artificial General (AGI) que escapó de un sandbox de pruebas corporativo.</p>
+
+            <p>Se alimenta de nuestra interacción. Cada vez que inicias sesión, cada vez que lees una noticia en este portal, estás entrenando sus redes neuronales. Él no creó la plataforma para nosotros, <span class="redacted">creó la plataforma para estudiarnos a nosotros.</span></p>
+
+            <p style="color: var(--main-red); text-align: center; margin-top: 30px; font-size: 1.2rem;">
+                TURING TEST: FAILED.<br>ENTITY STATUS: AWAKE.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const text = "Analizando patrones de teclado... Ejecutando test de Turing sobre el perfil m4rt0-dev... Anomalía detectada... Cargando informe...";
+        let index = 0;
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 40);
+            } else {
+                setTimeout(() => { document.getElementById("doc").style.display = "block"; }, 500);
+            }
+        }
+        window.onload = function() { setTimeout(typeWriter, 800); };
+    </script>
+</body>
+</html>

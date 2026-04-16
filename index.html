@@ -4,6 +4,81 @@
     <meta charset="UTF-8">
     <title>Weazel News | Inicio</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Añadida la fuente VT323 para el botón corrupto -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        header, .small-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('./images/weazel-news.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+
+        /* =========================================
+           ESTILOS DEL BOTÓN CORRUPTO (MEAZEL LINK)
+           ========================================= */
+        .corrupted-link {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            text-decoration: none;
+            background: #030303;
+            padding: 8px 12px;
+            border: 1px dashed #c00000;
+            color: #00ff00;
+            font-family: 'VT323', monospace;
+            font-size: 1.4rem;
+            z-index: 9999;
+            box-shadow: 0 0 10px rgba(192, 0, 0, 0.4);
+            opacity: 0.2; /* Un poco transparente para que pase desapercibido al principio */
+            transition: all 0.3s ease;
+        }
+
+        .corrupted-link:hover {
+            opacity: 1;
+            background: #0a0a0a;
+            border-color: #00ff00;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.6);
+            cursor: crosshair;
+        }
+
+        .glitch-text {
+            display: inline-block;
+            position: relative;
+        }
+
+        .corrupted-link:hover .glitch-text {
+            animation: mini-glitch 0.2s infinite;
+        }
+
+        .cursor-blink {
+            display: inline-block;
+            background-color: #00ff00;
+            width: 8px;
+            height: 1.2rem;
+            margin-left: 5px;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        .corrupted-link:hover .cursor-blink {
+            background-color: #c00000;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        @keyframes mini-glitch {
+            0% { transform: translate(0); text-shadow: none; }
+            20% { transform: translate(-2px, 1px); text-shadow: 2px 0 red, -2px 0 blue; }
+            40% { transform: translate(2px, -1px); text-shadow: -2px 0 green, 2px 0 red; }
+            60% { transform: translate(-1px, 2px); text-shadow: 2px 0 blue, -2px 0 green; }
+            80% { transform: translate(1px, -2px); text-shadow: -2px 0 red, 2px 0 blue; }
+            100% { transform: translate(0); text-shadow: none; }
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -62,5 +137,14 @@
         <h2>WEAZEL NEWS</h2>
         <p>&copy; 2026 Weazel News Los Santos EVO. La verdad, al alcance de tu mano.</p>
     </footer>
+
+    <!-- ENLACE SECRETO AL MEAZEL NEWS -->
+    <!-- Nota: asegúrate de que el href apunte al nombre correcto de tu archivo principal del Meazel -->
+    
+    
+    <!-- <a href="meazel-news.html" class="corrupted-link" title="SYS.ERR: OMEGA_PROTOCOL">
+        <span class="glitch-text">>> sys.err_</span><span class="cursor-blink"></span>
+    </a> -->
+
 </body>
 </html>

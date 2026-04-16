@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILTRACIÓN: Logia Los Santos // MEAZEL</title>
+    <link rel="icon" href="meazel-logo.png" type="image/png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&display=swap');
+
+        :root { --bg-color: #030303; --main-red: #c00000; --main-green: #00ff00; --text-muted: #888; }
+        body { background-color: var(--bg-color); color: var(--main-green); font-family: 'Courier Prime', monospace; margin: 0; padding: 20px; overflow-x: hidden; }
+        
+        body::after { 
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); 
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none; 
+        }
+
+        .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 3; }
+        .main-logo { width: 100px; display: block; margin: 0 auto 20px auto; filter: invert(1) sepia(1) hue-rotate(70deg) saturate(5) drop-shadow(0 0 8px var(--main-green)); mix-blend-mode: screen; }
+        header { text-align: center; border-bottom: 2px dashed var(--main-red); padding-bottom: 20px; margin-bottom: 30px; color: var(--main-red); }
+        
+        .glitch { font-family: 'VT323', monospace; font-size: 2.5rem; text-transform: uppercase; position: relative; text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.025em -0.05em 0 rgba(0,255,0,.75), 0.025em 0.05em 0 rgba(0,0,255,.75); animation: glitch 500ms infinite; margin: 0; }
+        @keyframes glitch { 0%, 14%, 15%, 49%, 50%, 99%, 100% { text-shadow: var(--shadow-1); } } /* Simplificado para el ejemplo, pero usa el mismo efecto de tu CSS original */
+
+        .nav-link { color: var(--main-red); text-decoration: none; font-size: 1.2rem; display: inline-block; margin-bottom: 20px; border: 1px solid var(--main-red); padding: 5px 10px; transition: 0.3s; }
+        .nav-link:hover { background-color: var(--main-red); color: black; box-shadow: 0 0 10px var(--main-red); }
+        
+        .terminal-text { color: var(--text-muted); margin-bottom: 20px; font-size: 1rem; }
+        .cursor { display: inline-block; width: 10px; height: 1.2rem; background-color: var(--text-muted); animation: blink 1s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .document-body { border: 1px solid #333; background-color: #0a0a0a; padding: 30px; position: relative; line-height: 1.6; }
+        .document-body::before { content: "[TOP SECRET // EVIDENCIA FOTOGRÁFICA ADJUNTA]"; position: absolute; top: -10px; right: 15px; background: var(--bg-color); padding: 0 5px; font-size: 0.8rem; color: var(--main-red); }
+        
+        .redacted { background-color: #333; color: #333; user-select: none; }
+        .redacted:hover { color: #444; }
+
+        /* Estilos específicos para las imágenes de evidencia */
+        .evidence-img {
+            width: 100%;
+            max-width: 700px;
+            display: block;
+            margin: 30px auto 5px auto;
+            border: 1px solid #333;
+            filter: grayscale(60%) sepia(30%) contrast(120%); /* Les da un toque de cámara de seguridad / documento viejo */
+            transition: 0.4s;
+        }
+
+        .evidence-img:hover {
+            filter: grayscale(0%) sepia(0%) contrast(100%);
+            border-color: var(--main-red);
+            box-shadow: 0 0 15px rgba(192, 0, 0, 0.4);
+        }
+
+        .img-caption {
+            text-align: center;
+            font-family: 'VT323', monospace;
+            color: var(--main-red);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="meazel-news.html" class="nav-link">< BACK TO MEAZEL NEWS</a>
+
+        <header>
+            <img src="./img-meazel/meazel-logo.png" alt="Símbolo Masónico M" class="main-logo">
+            <h1 class="glitch" data-text="EXPEDIENTE: OMEGA-LS">EXPEDIENTE: OMEGA-LS</h1>
+            <h2>// FILTRACIÓN LOGIA: LOS SANTOS //</h2>
+        </header>
+
+        <div class="terminal-text">
+            <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+
+        <div class="document-body" id="doc" style="display: none;">
+            
+            <p><strong>REPORTE CREADO:</strong> Sector 4 - Darknet Node.</p>
+            
+            <p>Una reciente filtración de documentos clasificados del <span class="redacted">Gabinete de Inteligencia</span> ha desatado una ola de especulación en círculos académicos, esotéricos y digitales. Los archivos, cuya autenticidad aún no ha sido confirmada oficialmente, apuntan a una supuesta red de conocimiento compartido entre logias masónicas de distintos lugares de la ciudad y posibles contactos con inteligencias no humanas.</p>
+
+            <img src="./img-meazel/meazel-1.png" alt="Escritorio Masónico" class="evidence-img">
+            <div class="img-caption">>> ARCHIVO_IMG_01: Escritorio interceptado en oficinas no registradas.</div>
+
+            <p>Los documentos, que comenzaron a circular en foros privados hace apenas dos semanas, describen reuniones celebradas en lugares asociados a la masonería, algunos de ellos situados en ubicaciones remotas y otros integrados en la ciudad bajo apariencia de edificios comunes. En estos textos se hace referencia a "intercambios de información" con entidades descritas como <span class="redacted">"no originarias de este plano geográfico o estelar"</span>.</p>
+
+            <p>Uno de los aspectos más llamativos de la filtración es la mención reiterada de símbolos y geometrías que coinciden con patrones encontrados por la ciudad de Los Santos. Según los documentos, estos patrones no serían meramente decorativos, sino que funcionarían como una interfaz de comunicación o anclaje energético.</p>
+
+            <img src="./img-meazel/meazel-2.png" alt="Libro de Juramentos Masónicos" class="evidence-img">
+            <div class="img-caption">>> ARCHIVO_IMG_02: "Vigilantia et Silentio" - Planos de infraestructuras anómalas.</div>
+
+            <p>Además, los archivos incluyen planos que apuntan a lo que se denominan "sitios de convergencia". Algunos investigadores independientes de nuestro club han comenzado a analizar estos planos para identificar edificaciones, sugiriendo que podrían corresponder a instalaciones masónicas subterráneas aún no documentadas oficialmente por el Ayuntamiento de Los Santos.</p>
+
+            <img src="./img-meazel/meazel-3.png" alt="Archivos Clasificados" class="evidence-img">
+            <div class="img-caption">>> ARCHIVO_IMG_03: Cajas de contención de documentos físicos incautados.</div>
+
+            <p>La masonería, históricamente rodeada de misterio y simbolismo, ha sido objeto de numerosas teorías a lo largo de los siglos. Sin embargo, expertos en historia señalan que no existen pruebas verificables que vinculen a esta organización con actividad extraterrestre. Aun así, la naturaleza detallada de los documentos filtrados ha generado dudas incluso entre los más escépticos del <span class="redacted">FIB y la IAA</span>.</p>
+
+            <p>Por el momento, ninguna institución gubernamental ha emitido declaraciones al respecto. Mientras tanto, el debate continúa creciendo, donde algunos consideran la filtración como la evidencia definitiva de un secreto largamente oculto, y otros la califican como una elaborada obra de desinformación para tapar <span class="redacted">proyectos militares oscuros</span>.</p>
+
+            <p style="text-align: center; font-weight: bold; margin-top: 40px; color: var(--main-red);">
+                Sea cual sea la verdad, este episodio vuelve a poner sobre la mesa una pregunta persistente:<br>
+                ¿Cuánto de lo que creemos saber sobre las estructuras de poder y conocimiento en el mundo permanece aún en la sombra?
+            </p>
+
+        </div>
+    </div>
+
+    <script>
+        const text = "By-pass de seguridad completado... Extrayendo metadatos EXIF de imágenes filtradas... Cruzando firmas masónicas en Los Santos... Desencriptando documento base...";
+        let index = 0;
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 35);
+            } else {
+                setTimeout(() => { document.getElementById("doc").style.display = "block"; }, 500);
+            }
+        }
+        window.onload = function() { setTimeout(typeWriter, 800); };
+    </script>
+</body>
+</html>

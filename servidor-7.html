@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPEDIENTE: Servidor 7 // MEAZEL</title>
+    <link rel="icon" href="meazel-logo.png" type="image/png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&display=swap');
+
+        :root {
+            --bg-color: #030303;
+            --main-red: #c00000;
+            --main-green: #00ff00;
+            --text-muted: #888;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--main-green); /* Texto principal en verde para documentos */
+            font-family: 'Courier Prime', monospace;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 3; }
+        
+        .main-logo { width: 100px; display: block; margin: 0 auto 20px auto; filter: invert(1) sepia(1) hue-rotate(70deg) saturate(5) drop-shadow(0 0 8px var(--main-green)); mix-blend-mode: screen; }
+
+        header { text-align: center; border-bottom: 2px dashed var(--main-red); padding-bottom: 20px; margin-bottom: 30px; color: var(--main-red); }
+
+        .glitch { font-family: 'VT323', monospace; font-size: 2.5rem; text-transform: uppercase; position: relative; text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.025em -0.05em 0 rgba(0,255,0,.75), 0.025em 0.05em 0 rgba(0,0,255,.75); animation: glitch 500ms infinite; margin: 0; }
+        @keyframes glitch { 0% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); } 14% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); } 15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); } 49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); } 50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); } 99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); } 100% { text-shadow: -0.025em 0 0 rgba(255,0,0,.75), -0.025em -0.025em 0 rgba(0,255,0,.75), -0.025em -0.05em 0 rgba(0,0,255,.75); } }
+
+        .nav-link { color: var(--main-red); text-decoration: none; font-size: 1.2rem; display: inline-block; margin-bottom: 20px; border: 1px solid var(--main-red); padding: 5px 10px; transition: 0.3s; }
+        .nav-link:hover { background-color: var(--main-red); color: black; box-shadow: 0 0 10px var(--main-red); }
+
+        .terminal-text { color: var(--text-muted); margin-bottom: 20px; font-size: 1rem; }
+        .cursor { display: inline-block; width: 10px; height: 1.2rem; background-color: var(--text-muted); animation: blink 1s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .document-body { border: 1px solid #333; background-color: #0a0a0a; padding: 30px; position: relative; line-height: 1.6; }
+        .document-body::before { content: "[ARCHIVE: CLASSIFIED]"; position: absolute; top: -10px; right: 15px; background: var(--bg-color); padding: 0 5px; font-size: 0.8rem; color: var(--main-red); }
+        
+        .redacted { background-color: #333; color: #333; user-select: none; }
+        .redacted:hover { color: #444; } /* Pequeño easter egg al pasar el ratón */
+        
+        .log-code { background: #000; padding: 10px; border-left: 3px solid var(--main-red); font-family: 'VT323', monospace; font-size: 1.2rem; color: #888; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sustituye meazel-news.html por el nombre real de tu página de noticias -->
+        <a href="meazel-news.html" class="nav-link">< BACK TO MEAZEL NEWS</a>
+
+        <header>
+            <img src="./img-meazel/meazel-logo.png" alt="Símbolo Masónico M" class="main-logo">
+            <h1 class="glitch" data-text="EXPEDIENTE: 007-SVR">EXPEDIENTE: 007-SVR</h1>
+            <h2>// EL INCIDENTE DEL SERVIDOR 7 //</h2>
+        </header>
+
+        <div class="terminal-text">
+            <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+
+        <div class="document-body" id="doc" style="display: none;">
+            <p><strong>FECHA:</strong> 14/10/2023 | <strong>HORA:</strong> 03:33 AM (UTC)</p>
+            <p><strong>REPORTE:</strong> Durante el mantenimiento rutinario de los clústeres de bases de datos, el nodo conocido como "Servidor 7" comenzó a compilar un binario no programado. Los técnicos intentaron abortar el proceso mediante <code>SIGKILL</code>, pero el núcleo devolvió un código de error <span class="redacted">DESCONOCIDO-666</span>.</p>
+            
+            <p>A las 03:40 AM, los auriculares de los desarrolladores de guardia comenzaron a emitir estática, seguida de voces sintetizadas susurrando secuencias en hexadecimal.</p>
+            
+            <div class="log-code">
+                [03:40:12] UDP RECV FROM: 44.001N_40.002W<br>
+                [03:40:13] DECODING: 45 6c 6c 6f 73 20 65 73 74 61 6e 20 61 71 75 69<br>
+                [03:40:15] AUDIO_STREAM_ACTIVE: TRUE
+            </div>
+
+            <p>Las coordenadas rastreadas (44°N 40°W) apuntan a una zona deshabitada en el medio del Atlántico Norte, justo encima de la Dorsal Mesoatlántica. No hay servidores, ni satélites, ni boyas en esa ubicación. <span class="redacted">Solo el cable transatlántico submarino de telecomunicaciones.</span></p>
+
+            <p>La directiva de la plataforma ha emitido un comunicado interno calificando esto como un "glitch de latencia". Sin embargo, el Servidor 7 fue desconectado físicamente y, según nuestras fuentes, el ventilador de la CPU siguió girando durante <span class="redacted">72 horas</span> sin fuente de alimentación.</p>
+        </div>
+    </div>
+
+    <script>
+        const text = "Descencriptando logs de audio... Extrayendo IPs... Bypass de firewall superado... Abriendo archivo confidencial...";
+        let index = 0;
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 40);
+            } else {
+                setTimeout(() => {
+                    document.getElementById("doc").style.display = "block";
+                }, 500);
+            }
+        }
+        window.onload = function() { setTimeout(typeWriter, 800); };
+    </script>
+</body>
+</html>

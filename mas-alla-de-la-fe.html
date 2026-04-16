@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPEDIENTE: Sanctum // MEAZEL</title>
+    <link rel="icon" href="meazel-logo.png" type="image/png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&display=swap');
+
+        :root { --bg-color: #030303; --main-red: #c00000; --main-green: #00ff00; --text-muted: #888; }
+        body { background-color: var(--bg-color); color: var(--main-green); font-family: 'Courier Prime', monospace; margin: 0; padding: 20px; overflow-x: hidden; }
+        
+        body::after { 
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); 
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none; 
+        }
+
+        .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 3; }
+        .main-logo { width: 100px; display: block; margin: 0 auto 20px auto; filter: invert(1) sepia(1) hue-rotate(70deg) saturate(5) drop-shadow(0 0 8px var(--main-green)); mix-blend-mode: screen; }
+        header { text-align: center; border-bottom: 2px dashed var(--main-red); padding-bottom: 20px; margin-bottom: 30px; color: var(--main-red); }
+        
+        .glitch { font-family: 'VT323', monospace; font-size: 2.5rem; text-transform: uppercase; position: relative; text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.025em -0.05em 0 rgba(0,255,0,.75), 0.025em 0.05em 0 rgba(0,0,255,.75); animation: glitch 500ms infinite; margin: 0; }
+        @keyframes glitch { 0%, 14%, 15%, 49%, 50%, 99%, 100% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); } }
+
+        .nav-link { color: var(--main-red); text-decoration: none; font-size: 1.2rem; display: inline-block; margin-bottom: 20px; border: 1px solid var(--main-red); padding: 5px 10px; transition: 0.3s; }
+        .nav-link:hover { background-color: var(--main-red); color: black; box-shadow: 0 0 10px var(--main-red); }
+        
+        .terminal-text { color: var(--text-muted); margin-bottom: 20px; font-size: 1rem; }
+        .cursor { display: inline-block; width: 10px; height: 1.2rem; background-color: var(--text-muted); animation: blink 1s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .document-body { border: 1px solid #333; background-color: #0a0a0a; padding: 30px; position: relative; line-height: 1.6; }
+        .document-body::before { content: "[EXPEDIENTE CLASIFICADO // CÓDIGO NEGRO]"; position: absolute; top: -10px; right: 15px; background: var(--bg-color); padding: 0 5px; font-size: 0.8rem; color: var(--main-red); }
+        
+        .redacted { background-color: #333; color: #333; user-select: none; }
+        .redacted:hover { color: #444; }
+
+        /* Estilos de las imágenes */
+        .evidence-img {
+            width: 100%;
+            max-width: 100%;
+            display: block;
+            border: 1px solid #333;
+            filter: grayscale(80%) sepia(20%) contrast(110%);
+            transition: 0.4s;
+            margin-bottom: 5px;
+        }
+
+        .evidence-img:hover {
+            filter: grayscale(0%) sepia(0%) contrast(100%);
+            border-color: var(--main-red);
+            box-shadow: 0 0 15px rgba(192, 0, 0, 0.4);
+            z-index: 10;
+        }
+
+        .img-caption {
+            text-align: center;
+            font-family: 'VT323', monospace;
+            color: var(--main-red);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /* Contenedor para agrupar fotos (Grid) */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0 5px 0;
+        }
+
+        @media (max-width: 600px) {
+            .photo-grid { grid-template-columns: 1fr; }
+        }
+
+        .alert-box { border: 1px solid var(--main-red); padding: 15px; background: rgba(192,0,0,0.1); margin: 20px 0; color: var(--main-red); font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Ajusta el href si tu página principal tiene otro nombre -->
+        <a href="meazel-news.html" class="nav-link">< BACK TO MEAZEL NEWS</a>
+
+        <header>
+            <img src="./img-meazel/meazel-logo.png" alt="Símbolo Masónico M" class="main-logo">
+            <h1 class="glitch" data-text="EXPEDIENTE: SANC-TUM">EXPEDIENTE: SANC-TUM</h1>
+            <h2>// MÁS ALLÁ DE LA FE, LO MORALMENTE INCORRECTO //</h2>
+        </header>
+
+        <div class="terminal-text">
+            <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+
+        <div class="document-body" id="doc" style="display: none;">
+            
+            <p>Bajo techos elevados donde el eco de los pasos se diluye entre columnas antiguas y vitrales que tiñen la luz con tonos suaves, un espacio tradicionalmente vinculado a la fe y al recogimiento ha quedado en el centro de una inesperada controversia. Lo que durante generaciones ha sido símbolo de calma espiritual y encuentro interior, hoy despierta interrogantes difíciles de ignorar.</p>
+
+            <div class="photo-grid">
+                <div>
+                    <img src="./img-meazel/meazel-9.png" alt="Vitral con copa" class="evidence-img">
+                </div>
+                <div>
+                    <img src="./img-meazel/meazel-8.png" alt="Interior iglesia" class="evidence-img">
+                </div>
+            </div>
+            <div class="img-caption">>> ARCHIVO_IMG_01-02: Inspección ocular. La simbología no coincide con los estándares eclesiásticos ortodoxos.</div>
+
+            <p>En los últimos días, diversas fuentes de la red WZN han comenzado a señalar movimientos inusuales en este enclave, describiendo situaciones que se alejan de la normalidad esperada en un lugar de estas características. Testimonios coincidentes apuntan a la presencia de pequeños grupos que actúan con discreción, despertando sospechas por la naturaleza poco clara de sus actividades.</p>
+
+            <p>Fuentes cercanas aseguran que, durante estas visitas aparentemente discretas, se han hallado documentos antiguos cuidadosamente resguardados en el propio altar. Dichos escritos contienen referencias a encuentros periódicos, narraciones de carácter inquietante y descripciones que algunos califican como "perturbadoras".</p>
+
+            <div class="photo-grid" style="margin-top: 15px;">
+                <div>
+                    <img src="./img-meazel/meazel-5.png" alt="Mano agarrando libro" class="evidence-img">
+                </div>
+                <div>
+                    <img src="./img-meazel/meazel-4.png" alt="Libro abierto con símbolos" class="evidence-img">
+                </div>
+            </div>
+            <div class="img-caption">>> ARCHIVO_IMG_03-05: Tomo recuperado in-situ. Esquemas de "Nodos", constelaciones y simbología masónica confirmada.</div>
+
+            <p>En estos textos se mezclan símbolos, rituales y fragmentos de relatos difíciles de interpretar, incluyendo menciones a reuniones privadas entre figuras influyentes y jóvenes invitadas bajo pretextos poco claros, en contextos alejados de cualquier actividad pública o transparente.</p>
+
+            <div class="alert-box">
+                "Algunos de estos pasajes sugieren que, tras establecer contacto con estos círculos, varias de estas jóvenes desaparecen de la ciudad sin dejar rastro, siendo posteriormente identificadas en los documentos mediante motes en clave en forma de comida, como 'Pizza', 'Hamburguesa', 'Taco', 'Perrito' seguido de un número de catalogación."
+            </div>
+
+            <p>Se trata de un sistema interno de registro cuya finalidad exacta aún no ha podido ser esclarecida, pero recuerda peligrosamente a redes de tráfico humano destapadas en la <span class="redacted">Deep Web</span>. Aunque no existe confirmación oficial, ciertos pasajes sugieren conexiones indirectas con estructuras de poder, mencionadas de forma ambigua pero insistente.</p>
+            
+            <p>No menos llamativo resulta el hecho de que varios testimonios coinciden en señalar que, fuera de este entorno histórico, los mismos individuos se congregan en un amplio recinto al aire libre, caracterizado por su exclusividad, extensas áreas verdes perfectamente cuidadas y una clientela asociada tradicionalmente a círculos de alto poder adquisitivo. </p>
+
+            <div class="photo-grid">
+                <div>
+                    <img src="./img-meazel/meazel-4.png" alt="Velas y pergamino" class="evidence-img">
+                </div>
+                <div>
+                    <img src="./img-meazel/meazel-6.png" alt="Plano de Los Santos Golf Club" class="evidence-img">
+                </div>
+            </div>
+            <div class="img-caption">>> ARCHIVO_IMG_06-07: Planos hallados ocultos en la iglesia. Objetivo identificado: LOS SANTOS GOLF CLUB.</div>
+
+            <p>Este lugar, rodeado de discreción y acceso limitado, podría servir como punto de encuentro complementario para las operaciones de la logia y las reuniones descritas en el tomo sagrado.</p>
+
+            <p>Por el momento, las autoridades y la <span class="redacted">LSPD</span> no han emitido declaraciones al respecto. Sin embargo, el creciente interés en torno a estas actividades plantea interrogantes aterradores sobre lo que realmente ocurre tras puertas que, a simple vista, parecen abiertas a todos, pero que esconden el destino de "Pizza", "Taco" y decenas más en la oscuridad.</p>
+
+        </div>
+    </div>
+
+    <script>
+        const text = "Interceptando frecuencias de la diócesis... Bypass en cámaras de seguridad... Extrayendo nomenclaturas de catálogo humano... Decodificando manuscrito...";
+        let index = 0;
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 35);
+            } else {
+                setTimeout(() => { document.getElementById("doc").style.display = "block"; }, 500);
+            }
+        }
+        window.onload = function() { setTimeout(typeWriter, 800); };
+    </script>
+</body>
+</html>
