@@ -64,7 +64,7 @@ Para el correcto funcionamiento del clúster de bases de datos, mantenga los pue
 ...T_R_U_S_T__N_O__O_N_E...
 ```
 
-<code><a href="meazel-news.html" style="color: inherit; text-decoration: none;">>>[INICIALIZAR_MEAZEL.EXE]</a></code>
+<code><a href="https://m4rt0-dev.github.io/MZN/index.html" style="color: inherit; text-decoration: none;">>>[INICIALIZAR_MEAZEL.EXE]</a></code>
 
 </details>
 
