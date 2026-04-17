@@ -1,4 +1,41 @@
 // === script.js ===
+// === animations.js - Manejo de animaciones de entrada y salida ===
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Agregar clase de entrada cuando la página carga
+    document.body.classList.add('page-enter');
+    
+    // Manejar clics en enlaces internos
+    const links = document.querySelectorAll('a[href]');
+    
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Solo aplicar animación de salida si es un enlace interno
+            if (href && !href.startsWith('http') && !href.startsWith('javascript:') && !href.startsWith('#')) {
+                e.preventDefault();
+                
+                // Agregar clase de salida
+                document.body.classList.add('page-exit');
+                
+                // Esperar a que termine la animación antes de navegar
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 600); // Duración de la animación de salida
+            }
+        });
+    });
+    
+    // Manejar botón atrás del navegador
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            document.body.classList.remove('page-exit');
+            document.body.classList.add('page-enter');
+        }
+    });
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
 
     // --- 1. INICIALIZAR SUPABASE ---
