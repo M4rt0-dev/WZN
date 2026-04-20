@@ -85,7 +85,7 @@ El login se valida contra `usuarios.json`:
 - `admin` → redirección a `panel-directiva.html`
 - `empleado` → redirección a `panel-empleado.html`
 
-> Recomendación: no usar este esquema en producción pública; está pensado para entorno RP/controlado.
+> Recomendación: no usar este esquema en producción pública; al estar en un JSON accesible desde cliente, las credenciales quedan expuestas. Para despliegues reales, usa backend con autenticación segura y variables de entorno.
 
 ## 🧩 Notas de mantenimiento
 
@@ -100,7 +100,7 @@ Proyecto operativo y orientado a despliegue estático para servidor roleplay Los
 
 <!--
 MEAZEL::SIGIL
-canal oculto activo -> meazel-news.html
+Canal oculto activo -> meazel-news.html
 rutas espejo:
 - filtracion-logia.html
 - mas-alla-de-la-fe.html
