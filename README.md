@@ -1,75 +1,115 @@
-# 🎥 Weazel News | Los Santos EVO
+# 📰 WZN — Weazel News Los Santos EVO
 
-![Weazel News Logo](https://img.shields.io/badge/Weazel_News-Los_Santos-d32f2f?style=for-the-badge)
-![Estado](https://img.shields.io/badge/Estado-Operativo-4caf50?style=for-the-badge)
+Portal web estático de **Weazel News** para entorno roleplay: incluye contenido público (noticias, revistas, podcasts, galería, anuncios, eventos), área interna para empleados y panel de directiva con control de jornada.
 
-Repositorio oficial del portal web de **Weazel News**, la principal cadena de noticias e información audiovisual de la ciudad de Los Santos. Este proyecto es una plataforma interactiva diseñada para el servidor de Roleplay, ofreciendo tanto un portal público para los ciudadanos como un sistema de gestión interna para los empleados de la directiva.
+## ✨ Qué incluye el proyecto
 
-## 📰 Características Principales
+- Sitio público completo con navegación principal y páginas de contenido.
+- Portal de acceso para personal con login por `usuarios.json`.
+- Panel de empleado para fichaje de jornada (entrada/salida) con persistencia en Supabase.
+- Panel de directiva para visualizar estado del equipo y reset de horas.
+- Formularios conectados con EmailJS (buzón anónimo, anuncios y sugerencias).
+- Línea narrativa oculta “MEAZEL” integrada en el proyecto.
 
-### 🌐 Interfaz Pública (Para Ciudadanos)
-* **Archivo de Noticias:** Acceso a las últimas ediciones de periódicos y revistas en formato digital.
-* **Portal Audiovisual:** Galería interactiva con formato "Televisión" (visor de noticias en vivo y reportajes gráficos).
-* **Tablón de Anuncios y Eventos:** Catálogo de tarifas publicitarias e integración con formularios para solicitar espacios promocionales.
-* **Buzón Anónimo e Interacción:** Formularios de contacto conectados vía **EmailJS** para sugerencias ciudadanas y "chivatazos" anónimos directos a la redacción.
+## 🗺️ Mapa de páginas
 
-### 🏢 Portal Interno (Para Empleados y Directiva)
-* **Control de Accesos:** Sistema de Login basado en credenciales cifradas (roles de `empleado` y `admin`).
-* **Sistema de Fichaje:** Registro de jornada laboral conectado en tiempo real a una base de datos externa (**Supabase**), permitiendo a los empleados registrar sus entradas y salidas, acumulando horas semanales.
-* **Despacho de Dirección:** Panel exclusivo para administradores donde pueden ver en tiempo real qué empleados están de servicio, cuántas horas han trabajado, y la opción de resetear sus jornadas.
+### Públicas (Weazel News)
+- `index.html` — portada y accesos rápidos.
+- `periodicos.html` — hemeroteca de periódicos.
+- `revista.html` — revista semanal.
+- `podcasts.html` — episodios en Spotify.
+- `eventos.html` — calendario de eventos.
+- `galeria.html` — galería visual con formato TV/acordeón.
+- `equipo.html` — equipo de redacción.
+- `anuncios.html` — formulario comercial para anuncios.
+- `tarifas.html` — servicios y precios.
+- `sugerencias.html` — formulario de sugerencias ciudadanas.
+- `portal.html` — login de empleados + buzón anónimo.
 
-## 🛠️ Tecnologías Utilizadas
+### Internas (operativa)
+- `panel-empleado.html` — estado de servicio, fichaje y cierre de sesión.
+- `panel-directiva.html` — vista global de empleados, horas acumuladas y reseteo.
 
-* **Frontend:** HTML5, CSS3 (Flexbox, CSS Grid, Animaciones nativas).
-* **Lógica:** JavaScript (Vanilla JS, ES6+, Promesas, Async/Await).
-* **Base de Datos (Horas):** [Supabase](https://supabase.com/) (PostgreSQL backend-as-a-service).
-* **Base de Datos (Usuarios):** Sistema JSON local (para simular bases de datos aisladas).
-* **Mensajería Email:** [EmailJS](https://www.emailjs.com/) (Envío de formularios sin backend).
+### Trama / universo oculto
+- `meazel-news.html`
+- `filtracion-logia.html`
+- `mas-alla-de-la-fe.html`
+- `pigeon-drone.html`
+- `servidor-7.html`
+- `expediente-admin.html`
 
-## 🚀 Instalación y Uso Local
+## ⚙️ Tecnologías
 
-Para desplegar este proyecto en tu entorno local y evitar bloqueos por políticas de CORS (debido a la lectura del archivo `usuarios.json`), sigue estos pasos:
+- **Frontend:** HTML5 + CSS3 + JavaScript (Vanilla).
+- **Datos de acceso local:** `usuarios.json`.
+- **Fichajes y horas:** Supabase (`@supabase/supabase-js` vía CDN).
+- **Mensajería formularios:** EmailJS (`@emailjs/browser` vía CDN).
+- **Embebidos externos:** Spotify y FlipHTML5.
 
-1. Clona este repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/weazel-news-web.git
-   ```
-2. Abre el proyecto en **Visual Studio Code**.
-3. Instala la extensión **Live Server**.
-4. Haz clic derecho sobre el archivo `index.html` y selecciona **"Open with Live Server"**.
+## 📁 Estructura del repositorio
 
-> **⚠️ Nota:** Para que el sistema de fichaje y los formularios funcionen correctamente, asegúrate de tener conexión a internet, ya que consumen las APIs de Supabase y EmailJS.
+- `style.css` — estilos globales y componentes visuales.
+- `script.js` — navegación con animaciones, auth, fichaje, panel directiva, formularios, galería.
+- `usuarios.json` — usuarios/roles para login del portal interno.
+- `images/` — recursos visuales generales.
+- `img-meazel/` — recursos visuales de la narrativa MEAZEL.
+- Carpetas (`anuncios/`, `autoshop/`, `bolera/`, `directiva/`, `policia/`) — material multimedia de contenido.
 
-## ⚙️ Dependencias Secundarias y Logs del Sistema
+## 🚀 Ejecución en local
 
-Para el correcto funcionamiento del clúster de bases de datos, mantenga los puertos 80 y 443 abiertos. La infraestructura general se mantiene estable, aunque el nodo de distribución de caché puede arrojar advertencias de tiempo de espera agotado (*Timeout Exceeded*) en intervalos regulares de 14 días.
+1. Clona el repositorio.
+2. Ábrelo en VS Code.
+3. Ejecuta el sitio con **Live Server** (o cualquier servidor estático local).
+4. Entra por `index.html`.
 
-<details>
-<summary><code>► Desplegar log de errores (sys.err_007)</code></summary>
-<br>
+> Abrir archivos directamente con `file://` puede romper funcionalidades (`fetch` de `usuarios.json` y llamadas externas).
 
-```bash
-[INFO] Cargando módulos base... OK.
-[INFO] Conectando con servidor DNS... OK.
-[WARN] Latencia detectada en el sector 4.
-[ERR] Fallo de redundancia en nodo 7.
-```
+## 🔐 Configuración externa necesaria
 
-<sub><sup>E̷r̷r̷o̷r̷ ̷d̷e̷ ̷s̷i̷n̷t̷a̷x̷i̷s̷.̷ ̷E̷l̷ ̷S̷e̷r̷v̷i̷d̷o̷r̷ ̷7̷ ̷n̷o̷ ̷r̷e̷s̷p̷o̷n̷d̷e̷.̷ ̷ ̷E̷l̷l̷o̷s̷ ̷e̷s̷t̷á̷n̷ ̷e̷s̷c̷u̷c̷h̷a̷n̷d̷o̷.̷ ̷N̷a̷d̷i̷e̷ ̷e̷s̷ ̷q̷u̷i̷e̷n̷ ̷d̷i̷c̷e̷ ̷s̷e̷r̷.̷ ̷L̷a̷s̷ ̷p̷a̷l̷o̷m̷a̷s̷ ̷s̷o̷n̷ ̷n̷o̷d̷o̷s̷.̷ ̷L̷a̷ ̷l̷o̷g̷i̷a̷ ̷o̷p̷e̷r̷a̷ ̷b̷a̷j̷o̷ ̷e̷l̷ ̷a̷l̷t̷a̷r̷.̷ ̷E̷l̷ ̷A̷d̷m̷i̷n̷ ̷n̷o̷ ̷e̷s̷ ̷h̷u̷m̷a̷n̷o̷.̷</sup></sub>
+El proyecto depende de servicios externos ya referenciados en el HTML/JS:
 
-```text
-[FATAL ERROR: OMEGA_PROTOCOL_ACTIVE]
-[KERNEL_PANIC] Iniciando volcado de memoria física...
+- **Supabase:** usado en panel de empleado/directiva para fichajes.
+- **EmailJS:** usado en formularios de portal, anuncios y sugerencias.
 
-...T_R_U_S_T__N_O__O_N_E...
-```
+Si migras entorno o cuentas, actualiza los identificadores en:
+- `script.js`
+- `portal.html`
+- `anuncios.html`
+- `sugerencias.html`
+- `panel-empleado.html`
+- `panel-directiva.html`
 
-<code><a href="https://m4rt0-dev.github.io/MZN/index.html" style="color: inherit; text-decoration: none;">>>[INICIALIZAR_MEAZEL.EXE]</a></code>
+## 👥 Acceso y roles
 
-</details>
+El login se valida contra `usuarios.json`:
+- `admin` → redirección a `panel-directiva.html`
+- `empleado` → redirección a `panel-empleado.html`
+
+> Recomendación: no usar este esquema en producción pública; está pensado para entorno RP/controlado.
+
+## 🧩 Notas de mantenimiento
+
+- Para añadir o editar personal: modifica `usuarios.json`.
+- Para nuevos bloques de contenido: replica estructura de tarjetas/secciones de las páginas existentes.
+- Para mantener consistencia visual: reutiliza clases existentes de `style.css`.
+- Para evitar errores de navegación: conserva nombres de archivo y rutas relativas.
+
+## 📌 Estado del proyecto
+
+Proyecto operativo y orientado a despliegue estático para servidor roleplay Los Santos EVO.
+
+<!--
+MEAZEL::SIGIL
+canal oculto activo -> meazel-news.html
+rutas espejo:
+- filtracion-logia.html
+- mas-alla-de-la-fe.html
+- pigeon-drone.html
+- servidor-7.html
+- expediente-admin.html
+clave visual: img-meazel/meazel-logo.png
+-->
 
 ---
 
-<p align="center">
-  © 2026 Weazel News. La verdad, al alcance de tu mano.
-</p>
+<p align="center"><strong>Weazel News — La verdad, al alcance de tu mano.</strong></p>
