@@ -9,7 +9,7 @@ Portal web estático de **Weazel News** para entorno roleplay: incluye contenido
 - Panel de empleado para fichaje de jornada (entrada/salida) con persistencia en Supabase.
 - Panel de directiva para visualizar estado del equipo y reset de horas.
 - Formularios conectados con EmailJS (buzón anónimo, anuncios y sugerencias).
-- Línea narrativa oculta “MEAZEL” integrada en el proyecto.
+- Contenido oculto tipo easter egg “MEAZEL” (storyline RP accesible por rutas específicas).
 
 ## 🗺️ Mapa de páginas
 
@@ -85,7 +85,14 @@ El login se valida contra `usuarios.json`:
 - `admin` → redirección a `panel-directiva.html`
 - `empleado` → redirección a `panel-empleado.html`
 
-> Recomendación: no usar este esquema en producción pública; al estar en un JSON accesible desde cliente, las credenciales quedan expuestas. Para despliegues reales, usa backend con autenticación segura y variables de entorno.
+## ⚠️ Security warning
+
+La autenticación actual está basada en `usuarios.json` cargado desde cliente. Esto expone credenciales a cualquier persona con acceso al sitio o al repositorio.
+
+Para producción real:
+- mover autenticación y validación de credenciales a backend;
+- usar hashes de contraseña y gestión de sesiones segura;
+- reemplazar credenciales embebidas por variables de entorno/secret manager.
 
 ## 🧩 Notas de mantenimiento
 
