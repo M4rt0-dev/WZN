@@ -358,7 +358,7 @@ Para información técnica más profunda, consulta la carpeta `docs/`:
 
 ## 📌 Estado del proyecto
 
-Proyecto **operativo** y orientado a despliegue estático para el servidor de roleplay Los Santos EVO.
+Proyecto **en standby** basado en el servidor de roleplay Los Santos EVO.
 
 <!--
 MEAZEL::SIGIL
