@@ -194,6 +194,95 @@ footer {
     margin-top: 2rem;
 }
 
+.footer-legal {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.footer-legal a {
+    color: var(--texto-gris);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-legal a:hover {
+    color: var(--rojo-weazel);
+}
+
+/* === BANNER DE COOKIES === */
+#wzn-cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #111;
+    border-top: 3px solid var(--rojo-weazel);
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    z-index: 9998;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.6);
+}
+
+#wzn-cookie-banner p {
+    margin: 0;
+    color: var(--texto-gris);
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+#wzn-cookie-banner a {
+    color: var(--rojo-weazel);
+    text-decoration: underline;
+}
+
+.wzn-cookie-btns {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+#wzn-cookie-accept {
+    background-color: var(--rojo-weazel);
+    color: white;
+    border: none;
+    padding: 9px 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#wzn-cookie-accept:hover {
+    background-color: var(--rojo-oscuro);
+}
+
+#wzn-cookie-reject {
+    background-color: transparent;
+    color: var(--texto-gris);
+    border: 1px solid #444;
+    padding: 9px 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#wzn-cookie-reject:hover {
+    border-color: var(--texto-gris);
+    color: white;
+}
+
 /* === ESTILOS NUEVOS PARA EL PANEL DE EMPLEADO === */
 .horas-box {
     background: #000;
