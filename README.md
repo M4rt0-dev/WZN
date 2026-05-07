@@ -21,7 +21,7 @@
 
 ---
 
-## �� ¿Qué es este proyecto?
+## ❓ ¿Qué es este proyecto?
 
 **Weazel News** es el portal web oficial de la cadena de noticias ficticia del servidor de roleplay *Los Santos EVO*. Funciona como un **sitio estático** (HTML + CSS + JavaScript vanilla) sin frameworks ni servidor propio, pensado para ser desplegado en cualquier hosting de archivos estáticos.
 
