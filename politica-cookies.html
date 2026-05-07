@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Cookies | Weazel News</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        header, .small-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('./images/weazel-news.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        .legal-content h3 {
+            color: var(--rojo-weazel);
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        .legal-content p, .legal-content ul {
+            color: var(--texto-gris);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+        .legal-content ul {
+            padding-left: 1.5rem;
+        }
+        .legal-content ul li {
+            margin-bottom: 0.5rem;
+        }
+        .legal-update {
+            background-color: var(--gris-oscuro);
+            border-left: 4px solid var(--rojo-weazel);
+            padding: 10px 20px;
+            margin-bottom: 2rem;
+            color: var(--texto-gris);
+            font-size: 0.9rem;
+        }
+        .tabla-legal {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.5rem;
+        }
+        .tabla-legal th {
+            background-color: var(--rojo-weazel);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+        }
+        .tabla-legal td {
+            background-color: #111;
+            padding: 10px 12px;
+            border-bottom: 1px solid #333;
+            color: var(--texto-gris);
+            vertical-align: top;
+        }
+        .tabla-legal tr:hover td {
+            background-color: #1a1a1a;
+        }
+        .badge-cookie {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .badge-necesaria { background-color: #2e7d32; color: white; }
+        .badge-funcional { background-color: #1565c0; color: white; }
+        .badge-terceros  { background-color: #6a1a6a; color: white; }
+        .btn-gestionar {
+            background-color: transparent;
+            border: 2px solid var(--rojo-weazel);
+            color: var(--rojo-weazel);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            border-radius: 3px;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        .btn-gestionar:hover {
+            background-color: var(--rojo-weazel);
+            color: white;
+        }
+    </style>
+    <script src="script.js"></script>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">WEAZEL NEWS</a>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Contenido ▼</a>
+                <ul class="dropdown-content">
+                    <li><a href="periodicos.html">Periódicos</a></li>
+                    <li><a href="revista.html">Revista</a></li>
+                    <li><a href="podcasts.html">Podcasts</a></li>
+                    <li><a href="eventos.html">Eventos</a></li>
+                    <li><a href="galeria.html">Galería</a></li>
+                </ul>
+            </li>
+            <li><a href="equipo.html">Equipo</a></li>
+            <li><a href="portal.html">Portal Empleado</a></li>
+            <li><a href="anuncios.html">Anuncios Locales</a></li>
+            <li><a href="tarifas.html">Tarifas</a></li>
+            <li><a href="sugerencias.html">Sugerencias</a></li>
+        </ul>
+    </nav>
+
+    <header class="small-header">
+        <span class="alerta-roja">INFORMACIÓN LEGAL</span>
+        <h1>Política de Cookies</h1>
+    </header>
+
+    <main>
+        <section>
+            <div class="legal-update">
+                Última actualización: mayo de 2026
+            </div>
+            <div class="legal-content">
+
+                <h2 class="titulo-seccion">Política de Cookies</h2>
+
+                <p>
+                    Este sitio web, <strong>weazelnews.losantos</strong> (en adelante, «el Sitio»), utiliza cookies y tecnologías
+                    similares para garantizar su correcto funcionamiento, mejorar tu experiencia de navegación y ofrecer servicios
+                    personalizados. A continuación te informamos de qué son las cookies, cuáles utilizamos y cómo puedes gestionarlas.
+                </p>
+
+                <h3>1. ¿Qué son las cookies?</h3>
+                <p>
+                    Las cookies son pequeños archivos de texto que un sitio web almacena en tu dispositivo (ordenador, tablet, móvil)
+                    cuando lo visitas. Permiten que el sitio recuerde tus acciones y preferencias durante un tiempo determinado, de modo
+                    que no tengas que volver a introducirlas cada vez que visites el sitio o navegues de una página a otra.
+                </p>
+
+                <h3>2. Tipos de cookies que utilizamos</h3>
+
+                <table class="tabla-legal">
+                    <thead>
+                        <tr>
+                            <th>Cookie / Tecnología</th>
+                            <th>Tipo</th>
+                            <th>Proveedor</th>
+                            <th>Finalidad</th>
+                            <th>Duración</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>wzn_cookie_consent</code></td>
+                            <td><span class="badge-cookie badge-necesaria">Necesaria</span></td>
+                            <td>Weazel News (propio)</td>
+                            <td>Almacena tu decisión sobre el aviso de cookies para no mostrarlo de nuevo</td>
+                            <td>1 año</td>
+                        </tr>
+                        <tr>
+                            <td>Sesión de Supabase (<code>sb-*</code>)</td>
+                            <td><span class="badge-cookie badge-funcional">Funcional</span></td>
+                            <td>Supabase</td>
+                            <td>Mantiene activa la sesión de los empleados en el Portal y gestiona la autenticación</td>
+                            <td>Sesión / hasta cierre de sesión</td>
+                        </tr>
+                        <tr>
+                            <td>Google Fonts</td>
+                            <td><span class="badge-cookie badge-terceros">Terceros</span></td>
+                            <td>Google LLC</td>
+                            <td>Carga de fuentes tipográficas; puede registrar la dirección IP del visitante en los servidores de Google</td>
+                            <td>Variable</td>
+                        </tr>
+                        <tr>
+                            <td>EmailJS SDK</td>
+                            <td><span class="badge-cookie badge-funcional">Funcional</span></td>
+                            <td>EmailJS</td>
+                            <td>Permite el envío de los formularios de sugerencias y anuncios por correo electrónico</td>
+                            <td>Sesión</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>3. Cookies necesarias</h3>
+                <p>
+                    Las cookies necesarias son imprescindibles para que el Sitio funcione correctamente. Sin ellas, algunas partes
+                    de la web —como el Portal de Empleado— no podrían operar. Estas cookies no almacenan ningún dato personal
+                    identificable más allá del necesario para el servicio.
+                </p>
+
+                <h3>4. Cookies funcionales</h3>
+                <p>
+                    Las cookies funcionales permiten recordar tus preferencias y ofrecerte funcionalidades mejoradas como el
+                    mantenimiento de la sesión de empleado. Su desactivación puede hacer que algunas funciones dejen de estar disponibles.
+                </p>
+
+                <h3>5. Cookies de terceros</h3>
+                <p>
+                    Este Sitio utiliza servicios de terceros que pueden instalar sus propias cookies. No tenemos control sobre las
+                    cookies de terceros. Puedes obtener más información sobre sus políticas de privacidad en los siguientes enlaces:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Google Fonts / Google LLC:</strong>
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--rojo-weazel);">
+                            policies.google.com/privacy
+                        </a>
+                    </li>
+                    <li>
+                        <strong>Supabase:</strong>
+                        <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--rojo-weazel);">
+                            supabase.com/privacy
+                        </a>
+                    </li>
+                    <li>
+                        <strong>EmailJS:</strong>
+                        <a href="https://www.emailjs.com/legal/privacy-policy/" target="_blank" rel="noopener noreferrer" style="color: var(--rojo-weazel);">
+                            emailjs.com/legal/privacy-policy
+                        </a>
+                    </li>
+                </ul>
+
+                <h3>6. Cómo gestionar o deshabilitar las cookies</h3>
+                <p>
+                    Puedes configurar tu navegador para que rechace todas las cookies o para que te avise cuando se envíe una cookie.
+                    Ten en cuenta que si deshabilitas las cookies, es posible que algunas partes del Sitio no funcionen correctamente.
+                </p>
+                <p>Instrucciones para los principales navegadores:</p>
+                <ul>
+                    <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer" style="color: var(--rojo-weazel);">Google Chrome</a></li>
+                    <li><a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-que-los-sitios-we" target="_blank" rel="noopener noreferrer" style="color: var(--rojo-weazel);">Mozilla Firefox</a></li>
+                    <li><a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer" style="color: var(--rojo-weazel);">Safari</a></li>
+                    <li><a href="https://support.microsoft.com/es-es/windows/eliminar-y-administrar-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener noreferrer" style="color: var(--rojo-weazel);">Microsoft Edge</a></li>
+                </ul>
+
+                <p>También puedes retirar tu consentimiento en cualquier momento haciendo clic en el siguiente botón:</p>
+                <button class="btn-gestionar" onclick="wzn_resetCookieConsent()">Gestionar mis preferencias de cookies</button>
+
+                <h3>7. Actualizaciones de esta política</h3>
+                <p>
+                    Podemos actualizar esta Política de Cookies en cualquier momento. Los cambios significativos serán notificados
+                    mediante un nuevo aviso en el Sitio. Te recomendamos revisarla periódicamente.
+                </p>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h2>WEAZEL NEWS</h2>
+        <p>&copy; 2026 Weazel News Los Santos EVO. La verdad, al alcance de tu mano.</p>
+        <p class="footer-legal">
+            <a href="aviso-legal.html">Aviso Legal</a> ·
+            <a href="politica-privacidad.html">Política de Privacidad</a> ·
+            <a href="politica-cookies.html">Política de Cookies</a>
+        </p>
+    </footer>
+
+</body>
+</html>

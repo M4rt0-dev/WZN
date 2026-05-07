@@ -1,4 +1,61 @@
 // === script.js ===
+
+// === BANNER DE COOKIES ===
+(function () {
+    var COOKIE_KEY = 'wzn_cookie_consent';
+
+    function getCookieConsent() {
+        return localStorage.getItem(COOKIE_KEY);
+    }
+
+    function setCookieConsent(value) {
+        localStorage.setItem(COOKIE_KEY, value);
+    }
+
+    function hideBanner() {
+        var banner = document.getElementById('wzn-cookie-banner');
+        if (banner) banner.remove();
+    }
+
+    function showBanner() {
+        var banner = document.createElement('div');
+        banner.id = 'wzn-cookie-banner';
+        banner.innerHTML =
+            '<p>Utilizamos cookies propias y de terceros para garantizar el funcionamiento del sitio, ' +
+            'gestionar el Portal de Empleado y mejorar tu experiencia. ' +
+            'Puedes aceptarlas, rechazarlas o consultar nuestra ' +
+            '<a href="politica-cookies.html">Política de Cookies</a> y ' +
+            '<a href="politica-privacidad.html">Política de Privacidad</a>.</p>' +
+            '<div class="wzn-cookie-btns">' +
+            '<button id="wzn-cookie-reject">Rechazar</button>' +
+            '<button id="wzn-cookie-accept">Aceptar</button>' +
+            '</div>';
+        document.body.appendChild(banner);
+
+        document.getElementById('wzn-cookie-accept').addEventListener('click', function () {
+            setCookieConsent('accepted');
+            hideBanner();
+        });
+
+        document.getElementById('wzn-cookie-reject').addEventListener('click', function () {
+            setCookieConsent('rejected');
+            hideBanner();
+        });
+    }
+
+    // Función global para gestionar/resetear preferencias desde la página de cookies
+    window.wzn_resetCookieConsent = function () {
+        localStorage.removeItem(COOKIE_KEY);
+        showBanner();
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!getCookieConsent()) {
+            showBanner();
+        }
+    });
+})();
+
 // === animations.js - Manejo de animaciones de entrada y salida ===
 
 document.addEventListener('DOMContentLoaded', function() {
