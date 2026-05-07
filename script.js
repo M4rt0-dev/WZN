@@ -217,7 +217,11 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', async () => {
 
     // --- 1. INICIALIZAR SUPABASE ---
-    const cookieManager = window.wznCookieManager;
+    const cookieManager = window.wznCookieManager || {
+        hasAccepted: function () { return false; },
+        initEmailJs: function () { return Promise.resolve(false); },
+        getSupabaseClient: function () { return Promise.resolve(null); }
+    };
     let supabase = null;
 
     // Solo inicializa Supabase si hay consentimiento aceptado
