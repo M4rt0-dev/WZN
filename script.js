@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const href = this.getAttribute('href');
             
             // Solo aplicar animación de salida si es un enlace interno
-            if (href && !href.startsWith('http') && !href.startsWith('javascript:') && !href.startsWith('#')) {
+            if (href && !href.startsWith('http') && !href.startsWith('javascript:') && !href.startsWith('data:') && !href.startsWith('vbscript:') && !href.startsWith('#')) {
                 e.preventDefault();
                 
                 // Agregar clase de salida
