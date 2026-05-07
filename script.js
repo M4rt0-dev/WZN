@@ -3,13 +3,25 @@
 // === BANNER DE COOKIES ===
 (function () {
     var COOKIE_KEY = 'wzn_cookie_consent';
+    var CONSENT_ACCEPTED = 'accepted';
+    var CONSENT_REJECTED = 'rejected';
+    var EMAILJS_SRC = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+    var SUPABASE_SRC = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    var pendingAcceptCallbacks = [];
+    var loadedScripts = {};
 
     function getCookieConsent() {
-        return localStorage.getItem(COOKIE_KEY);
+        try {
+            return localStorage.getItem(COOKIE_KEY);
+        } catch (_) {
+            return null;
+        }
     }
 
     function setCookieConsent(value) {
-        localStorage.setItem(COOKIE_KEY, value);
+        try {
+            localStorage.setItem(COOKIE_KEY, value);
+        } catch (_) {}
     }
 
     function hideBanner() {
@@ -17,7 +29,78 @@
         if (banner) banner.remove();
     }
 
+    function clearFunctionalStorage() {
+        try {
+            localStorage.removeItem('weazel_session');
+            localStorage.removeItem('weazel_role');
+            localStorage.removeItem('weazel_nombre');
+
+            Object.keys(localStorage).forEach(function (key) {
+                if (key.indexOf('sb-') === 0) {
+                    localStorage.removeItem(key);
+                }
+            });
+        } catch (_) {}
+    }
+
+    function loadScriptOnce(src) {
+        if (loadedScripts[src]) return loadedScripts[src];
+
+        loadedScripts[src] = new Promise(function (resolve, reject) {
+            var existing = document.querySelector('script[data-wzn-src="' + src + '"]');
+            if (existing) {
+                resolve();
+                return;
+            }
+
+            var script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.dataset.wznSrc = src;
+            script.onload = function () { resolve(); };
+            script.onerror = function () { reject(new Error('No se pudo cargar ' + src)); };
+            document.head.appendChild(script);
+        });
+
+        return loadedScripts[src];
+    }
+
+    function ensureEmailJsReady() {
+        return loadScriptOnce(EMAILJS_SRC)
+            .then(function () {
+                if (window.emailjs && !window.__wznEmailJsInitialized) {
+                    window.emailjs.init('ERhS_42VHBVxNpsCQ');
+                    window.__wznEmailJsInitialized = true;
+                }
+                return !!window.emailjs;
+            })
+            .catch(function () {
+                return false;
+            });
+    }
+
+    function ensureSupabaseReady() {
+        return loadScriptOnce(SUPABASE_SRC)
+            .then(function () {
+                return !!window.supabase;
+            })
+            .catch(function () {
+                return false;
+            });
+    }
+
+    function enableAcceptedServices() {
+        Promise.allSettled([ensureEmailJsReady(), ensureSupabaseReady()]).finally(function () {
+            while (pendingAcceptCallbacks.length) {
+                var cb = pendingAcceptCallbacks.shift();
+                try { cb(); } catch (_) {}
+            }
+        });
+    }
+
     function showBanner() {
+        if (document.getElementById('wzn-cookie-banner')) return;
+
         var banner = document.createElement('div');
         banner.id = 'wzn-cookie-banner';
         banner.innerHTML =
@@ -33,24 +116,62 @@
         document.body.appendChild(banner);
 
         document.getElementById('wzn-cookie-accept').addEventListener('click', function () {
-            setCookieConsent('accepted');
+            setCookieConsent(CONSENT_ACCEPTED);
             hideBanner();
+            enableAcceptedServices();
         });
 
         document.getElementById('wzn-cookie-reject').addEventListener('click', function () {
-            setCookieConsent('rejected');
+            setCookieConsent(CONSENT_REJECTED);
+            clearFunctionalStorage();
             hideBanner();
         });
     }
 
     // Función global para gestionar/resetear preferencias desde la página de cookies
     window.wzn_resetCookieConsent = function () {
-        localStorage.removeItem(COOKIE_KEY);
+        try {
+            localStorage.removeItem(COOKIE_KEY);
+        } catch (_) {}
         showBanner();
     };
 
+    window.wznCookieManager = {
+        getConsent: getCookieConsent,
+        hasAccepted: function () { return getCookieConsent() === CONSENT_ACCEPTED; },
+        hasRejected: function () { return getCookieConsent() === CONSENT_REJECTED; },
+        onAccept: function (callback) {
+            if (typeof callback !== 'function') return;
+            if (getCookieConsent() === CONSENT_ACCEPTED) {
+                callback();
+                return;
+            }
+            pendingAcceptCallbacks.push(callback);
+        },
+        initEmailJs: ensureEmailJsReady,
+        getSupabaseClient: async function () {
+            if (getCookieConsent() !== CONSENT_ACCEPTED) return null;
+
+            var isSupabaseReady = await ensureSupabaseReady();
+            if (!isSupabaseReady || !window.supabase) return null;
+
+            if (!window.__wznSupabaseClient) {
+                var supabaseUrl = 'https://zokaarirkqourkkfmkso.supabase.co';
+                var supabaseKey = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
+                window.__wznSupabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            }
+
+            return window.__wznSupabaseClient;
+        }
+    };
+
     document.addEventListener('DOMContentLoaded', function () {
-        if (!getCookieConsent()) {
+        var consent = getCookieConsent();
+        if (consent === CONSENT_ACCEPTED) {
+            enableAcceptedServices();
+        } else if (consent === CONSENT_REJECTED) {
+            clearFunctionalStorage();
+        } else {
             showBanner();
         }
     });
@@ -96,19 +217,23 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', async () => {
 
     // --- 1. INICIALIZAR SUPABASE ---
+    const cookieManager = window.wznCookieManager;
     let supabase = null;
-    
-    // Solo inicializa Supabase si la librería existe en la página
-    if (window.supabase) {
-        const supabaseUrl = 'https://zokaarirkqourkkfmkso.supabase.co';
-        const supabaseKey = 'sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx';
-        supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Solo inicializa Supabase si hay consentimiento aceptado
+    if (cookieManager && cookieManager.hasAccepted()) {
+        supabase = await cookieManager.getSupabaseClient();
     }
     // --- 2. LÓGICA DE INICIO DE SESIÓN (portal.html) ---
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
         formLogin.addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            if (!cookieManager || !cookieManager.hasAccepted()) {
+                alert('Debes aceptar las cookies funcionales para iniciar sesión en el Portal de Empleado.');
+                return;
+            }
             
             const usuarioInput = document.getElementById('login-user').value.trim();
             const passInput = document.getElementById('login-pass').value.trim();
@@ -150,6 +275,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- 3. LÓGICA DEL PANEL DE EMPLEADO (panel-empleado.html) ---
     const panelFichaje = document.getElementById('panel-fichaje');
     if (panelFichaje) {
+        if (!cookieManager || !cookieManager.hasAccepted()) {
+            panelFichaje.innerHTML = '<section><div class="card"><h2>Cookies funcionales requeridas</h2><p>Para usar el panel de fichajes debes aceptar las cookies funcionales.</p><button id="wzn-open-cookie-preferences" class="btn">Gestionar cookies</button></div></section>';
+            const manageBtn = document.getElementById('wzn-open-cookie-preferences');
+            if (manageBtn) manageBtn.addEventListener('click', window.wzn_resetCookieConsent);
+            return;
+        }
+
+        if (!supabase) {
+            panelFichaje.innerHTML = '<section><div class="card"><h2>Error de conexión</h2><p>No se pudo inicializar Supabase. Revisa tu conexión y vuelve a intentarlo.</p></div></section>';
+            return;
+        }
+
         const sessionUser = localStorage.getItem('weazel_session');
         const sessionRole = localStorage.getItem('weazel_role');
         const sessionNombre = localStorage.getItem('weazel_nombre') || sessionUser;
@@ -260,6 +397,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- 4. LÓGICA DEL DESPACHO DE DIRECTIVA (panel-directiva.html) ---
     const panelDirectiva = document.getElementById('panel-directiva');
     if (panelDirectiva) {
+        if (!cookieManager || !cookieManager.hasAccepted()) {
+            panelDirectiva.innerHTML = '<section><div class="card"><h2>Cookies funcionales requeridas</h2><p>Para usar el panel de directiva debes aceptar las cookies funcionales.</p><button id="wzn-open-cookie-preferences" class="btn">Gestionar cookies</button></div></section>';
+            const manageBtn = document.getElementById('wzn-open-cookie-preferences');
+            if (manageBtn) manageBtn.addEventListener('click', window.wzn_resetCookieConsent);
+            return;
+        }
+
+        if (!supabase) {
+            panelDirectiva.innerHTML = '<section><div class="card"><h2>Error de conexión</h2><p>No se pudo inicializar Supabase. Revisa tu conexión y vuelve a intentarlo.</p></div></section>';
+            return;
+        }
+
         const sessionRole = localStorage.getItem('weazel_role');
 
         // Protección de ruta
@@ -406,8 +555,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Buzón Anónimo (portal.html)
 const formBuzon = document.getElementById('form-buzon');
 if (formBuzon) {
-    formBuzon.addEventListener('submit', function(e) {
+    formBuzon.addEventListener('submit', async function(e) {
         e.preventDefault(); // Evita que la página se recargue
+
+        if (!cookieManager || !cookieManager.hasAccepted()) {
+            alert('Debes aceptar las cookies funcionales para enviar formularios.');
+            return;
+        }
+
+        const emailReady = await cookieManager.initEmailJs();
+        if (!emailReady || !window.emailjs) {
+            alert('No se pudo cargar el servicio de envío de formularios. Inténtalo de nuevo.');
+            return;
+        }
         
         const btnSubmit = this.querySelector('button[type="submit"]');
         const textoOriginal = btnSubmit.textContent;
@@ -435,8 +595,19 @@ if (formBuzon) {
 // Publicar Anuncio (anuncios.html)
 const formBuzon1 = document.getElementById('form-buzon1');
 if (formBuzon1) {
-    formBuzon1.addEventListener('submit', function(e) {
+    formBuzon1.addEventListener('submit', async function(e) {
         e.preventDefault(); 
+
+        if (!cookieManager || !cookieManager.hasAccepted()) {
+            alert('Debes aceptar las cookies funcionales para enviar formularios.');
+            return;
+        }
+
+        const emailReady = await cookieManager.initEmailJs();
+        if (!emailReady || !window.emailjs) {
+            alert('No se pudo cargar el servicio de envío de formularios. Inténtalo de nuevo.');
+            return;
+        }
         
         const btnSubmit = this.querySelector('button[type="submit"]');
         const textoOriginal = btnSubmit.textContent;
@@ -463,8 +634,19 @@ if (formBuzon1) {
 
 const formSugerencias = document.getElementById('form-sugerencias');
 if (formSugerencias) {
-    formSugerencias.addEventListener('submit', function(e) {
+    formSugerencias.addEventListener('submit', async function(e) {
         e.preventDefault(); 
+
+        if (!cookieManager || !cookieManager.hasAccepted()) {
+            alert('Debes aceptar las cookies funcionales para enviar formularios.');
+            return;
+        }
+
+        const emailReady = await cookieManager.initEmailJs();
+        if (!emailReady || !window.emailjs) {
+            alert('No se pudo cargar el servicio de envío de formularios. Inténtalo de nuevo.');
+            return;
+        }
         
         const btnSubmit = this.querySelector('button[type="submit"]');
         const textoOriginal = btnSubmit.textContent;
