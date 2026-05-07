@@ -1,66 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <defs>
-    <!-- Dark background gradient -->
-    <linearGradient id="bg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#1e1e1e"/>
-      <stop offset="100%" stop-color="#060606"/>
-    </linearGradient>
-    <!-- W letter gradient: bright red → deep crimson -->
-    <linearGradient id="wg" x1="0" y1="16" x2="0" y2="28" gradientUnits="userSpaceOnUse">
-      <stop offset="0%"   stop-color="#ff5252"/>
-      <stop offset="55%"  stop-color="#d32f2f"/>
-      <stop offset="100%" stop-color="#8b0000"/>
-    </linearGradient>
-    <!-- Subtle glow behind the W -->
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="0.9" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <!-- Live-dot pulse ring (drawn separately, no animation to keep file lean) -->
-  </defs>
+  <style>
+    .bg   { fill: #111111; }
+    .w    { stroke: #ffffff; }
+    @media (prefers-color-scheme: light) {
+      .bg { fill: #f0f0f0; }
+      .w  { stroke: #cc1111; }
+    }
+  </style>
 
-  <!-- ─── Background ─── -->
-  <rect width="32" height="32" rx="6" fill="url(#bg)"/>
+  <!-- Background -->
+  <rect class="bg" width="32" height="32" rx="7"/>
 
-  <!-- Inner border accent (red, subtle) -->
-  <rect width="32" height="32" rx="6" fill="none"
-        stroke="#d32f2f" stroke-width="0.6" opacity="0.35"/>
-
-  <!-- Top-edge shine highlight -->
-  <rect x="1" y="1" width="30" height="5" rx="4"
-        fill="white" opacity="0.05"/>
-
-  <!-- ─── Broadcast signal arcs (quadratic béziers → reliable upward curves) ─── -->
-  <!-- Arc 1 – widest, faintest -->
-  <path d="M 5,11.5 Q 16,2 27,11.5"
-        fill="none" stroke="#b71c1c" stroke-width="1"
-        stroke-linecap="round" opacity="0.38"/>
-  <!-- Arc 2 – medium -->
-  <path d="M 8.5,13.5 Q 16,6.5 23.5,13.5"
-        fill="none" stroke="#d32f2f" stroke-width="1.1"
-        stroke-linecap="round" opacity="0.60"/>
-  <!-- Arc 3 – narrowest, brightest -->
-  <path d="M 12,15.5 Q 16,10.5 20,15.5"
-        fill="none" stroke="#ef5350" stroke-width="1.25"
-        stroke-linecap="round" opacity="0.90"/>
-
-  <!-- ─── W letterform (polyline) ─── -->
-  <polyline points="3,16.5 7.5,27 12,19.5 16,25 20,19.5 24.5,27 29,16.5"
+  <!-- W letterform -->
+  <polyline class="w"
+            points="3.5,7 8.5,25 16,13.5 23.5,25 28.5,7"
             fill="none"
-            stroke="url(#wg)"
-            stroke-width="2.9"
+            stroke-width="3.8"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            filter="url(#glow)"/>
-
-  <!-- ─── LIVE dot (top-right corner) ─── -->
-  <!-- Outer pulse ring -->
-  <circle cx="27.8" cy="4.2" r="3.5" fill="#c62828" opacity="0.25"/>
-  <!-- Main dot -->
-  <circle cx="27.8" cy="4.2" r="2.4" fill="#e53935"/>
-  <!-- White specular highlight -->
-  <circle cx="27.1" cy="3.6" r="0.8" fill="white" opacity="0.85"/>
+            stroke-linejoin="round"/>
 </svg>
