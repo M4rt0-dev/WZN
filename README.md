@@ -26,6 +26,11 @@ Portal web estático de **Weazel News** para entorno roleplay: incluye contenido
 - `sugerencias.html` — formulario de sugerencias ciudadanas.
 - `portal.html` — login de empleados + buzón anónimo.
 
+### Legales
+- `aviso-legal.html` — aviso legal del sitio.
+- `politica-privacidad.html` — política de privacidad.
+- `politica-cookies.html` — política de cookies.
+
 ### Internas (operativa)
 - `panel-empleado.html` — estado de servicio, fichaje y cierre de sesión.
 - `panel-directiva.html` — vista global de empleados, horas acumuladas y reseteo.
@@ -70,6 +75,7 @@ El proyecto depende de servicios externos ya referenciados en el HTML/JS:
 
 - **Supabase:** usado en panel de empleado/directiva para fichajes.
 - **EmailJS:** usado en formularios de portal, anuncios y sugerencias.
+- **Consentimiento de cookies:** Supabase y EmailJS se cargan dinámicamente desde `script.js` solo después de que el usuario acepta las cookies. Las páginas legales (`politica-cookies.html`, `politica-privacidad.html`, `aviso-legal.html`) están enlazadas desde el banner de cookies.
 
 Si migras entorno o cuentas, actualiza los identificadores en:
 - `script.js`
