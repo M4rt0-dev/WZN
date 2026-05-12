@@ -4,6 +4,52 @@ Este documento explica en detalle cómo están configurados y cómo funcionan lo
 
 ---
 
+## 🚫 Aviso de propiedad intelectual
+
+> **Este proyecto es de uso privado y está protegido por derechos de autor.**
+>
+> **Queda estrictamente prohibida la copia, reproducción, distribución o reutilización total o parcial de este sitio web sin el permiso explícito y por escrito de su creador ([@M4rt0-dev](https://github.com/M4rt0-dev)).**
+>
+> Si deseas adaptar este proyecto para tu propio servidor o comunidad, debes solicitar autorización previa al autor.
+
+---
+
+## 🔁 Si tienes permiso para duplicar este sitio
+
+Si has obtenido permiso explícito para usar este proyecto como base, **debes reemplazar todas las claves y enlaces de los servicios externos** antes de desplegar tu propia versión. Usar las claves originales haría que tus datos se mezclen con los del proyecto original y podría agotar los límites de uso de los servicios.
+
+### Qué cambiar en Supabase
+
+1. Crea un nuevo proyecto en [supabase.com](https://supabase.com) con tu propia cuenta.
+2. Crea la tabla `fichajes` con la estructura documentada en la sección [Tabla `fichajes`](#tabla-fichajes) de este mismo documento.
+3. Configura las políticas RLS apropiadas (ver [Configurar Row Level Security](#configurar-row-level-security-rls-recomendada)).
+4. Obtén tu **Project URL** y tu **Publishable Key** desde *Settings → API* en el panel de Supabase.
+5. Sustituye en `script.js` (líneas 159 y 160):
+   - La URL del proyecto: `https://zokaarirkqourkkfmkso.supabase.co` → tu nueva URL.
+   - La clave publicable: `sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx` → tu nueva clave.
+
+### Qué cambiar en EmailJS
+
+1. Crea una cuenta en [emailjs.com](https://emailjs.com).
+2. Crea un Email Service conectando tu proveedor de correo.
+3. Crea las plantillas de correo necesarias (una para el buzón anónimo y otra para anuncios/sugerencias), replicando las variables de los formularios documentadas más abajo.
+4. Obtén tu **Public Key**, tu **Service ID** y los **Template IDs** desde el panel de EmailJS.
+5. Sustituye en `script.js`:
+   - Línea 72: `ERhS_42VHBVxNpsCQ` → tu Public Key.
+   - Líneas 582, 622, 662: `service_a6y2ih9` → tu Service ID.
+   - Línea 582: `template_9887dpi` → tu Template ID del buzón anónimo.
+   - Líneas 622 y 662: `template_dh8tpdk` → tu Template ID de anuncios/sugerencias.
+
+### Otros enlaces y referencias a actualizar
+
+Además de las claves de los servicios, si duplicas el sitio también debes revisar y actualizar:
+
+- Las URLs hardcodeadas al repositorio original (ej: en el `README.md`).
+- Los datos de empleados en `usuarios.json` (elimina los usuarios originales y añade los tuyos).
+- Las imágenes, textos y contenidos editoriales del sitio (periódicos, galería, equipo, etc.), ya que forman parte de la identidad original de Weazel News Los Santos EVO.
+
+---
+
 ## 🟢 Supabase
 
 ### ¿Qué es Supabase?

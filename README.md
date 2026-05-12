@@ -16,8 +16,9 @@
 8. [Gestión de cookies y servicios externos](#-gestión-de-cookies-y-servicios-externos)
 9. [Configuración de servicios externos](#-configuración-de-servicios-externos)
 10. [Guía de mantenimiento rápido](#-guía-de-mantenimiento-rápido)
-11. [Advertencia de seguridad](#️-advertencia-de-seguridad)
-12. [Documentación detallada](#-documentación-detallada)
+11. [Propiedad intelectual y uso del proyecto](#-propiedad-intelectual-y-uso-del-proyecto)
+12. [Advertencia de seguridad](#️-advertencia-de-seguridad)
+13. [Documentación detallada](#-documentación-detallada)
 
 ---
 
@@ -322,6 +323,30 @@ La tabla en Supabase que usa el sistema se llama **`fichajes`** y tiene estas co
 ### Resetear las horas de un empleado
 1. Inicia sesión con la cuenta `admin` en `portal.html`.
 2. En el panel de directiva, haz clic en **"Poner a 0"** en la fila del empleado.
+
+---
+
+## 🚫 Propiedad intelectual y uso del proyecto
+
+> **Este proyecto está protegido por derechos de autor.**
+>
+> **Queda estrictamente prohibida la copia, reproducción, distribución o reutilización total o parcial de este sitio web sin el permiso explícito y por escrito de su creador ([@M4rt0-dev](https://github.com/M4rt0-dev)).**
+
+Si tienes permiso para duplicar o adaptar este proyecto, **debes reemplazar obligatoriamente todas las claves y enlaces de los servicios externos** antes de desplegarlo. Usar las claves originales mezclaría datos con el proyecto original y agotaría los límites de uso de los servicios.
+
+### Qué cambiar si duplicas el sitio
+
+| Servicio | Qué cambiar | Dónde |
+|---|---|---|
+| **Supabase** | Project URL y Publishable Key | `script.js` líneas 159 y 160 |
+| **EmailJS** | Public Key, Service ID y Template IDs | `script.js` líneas 72, 582, 622, 662 |
+
+Además de las claves, también debes actualizar:
+- Los usuarios en `usuarios.json` (elimina los originales y añade los tuyos).
+- Todos los contenidos editoriales (periódicos, galería, equipo, textos del sitio), ya que son parte de la identidad original de Weazel News Los Santos EVO.
+- Cualquier referencia o enlace al repositorio original.
+
+Para una guía paso a paso de cada valor a cambiar, consulta [`docs/INTEGRACIONES.md`](docs/INTEGRACIONES.md).
 
 ---
 
