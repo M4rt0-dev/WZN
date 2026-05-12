@@ -4,6 +4,51 @@ Este documento explica en detalle cómo están configurados y cómo funcionan lo
 
 ---
 
+## 🍴 Guía de fork / duplicación completa
+
+> **Si vas a usar este proyecto como base para tu propia comunidad, lee esta sección primero.**
+
+El proyecto utiliza cuentas reales de Supabase y EmailJS vinculadas al proyecto original. Si forkeas el repositorio sin cambiar estas credenciales:
+
+- Los fichajes de tus empleados se mezclarán (o colisionarán) con los del proyecto original en Supabase.
+- Los formularios de contacto llegarán al correo del proyecto original, no al tuyo.
+
+### Checklist de cambios obligatorios al duplicar
+
+#### Supabase
+
+| Paso | Acción |
+|---|---|
+| 1 | Crea un nuevo proyecto en [supabase.com](https://supabase.com) |
+| 2 | Crea la tabla `fichajes` (ver estructura más abajo) |
+| 3 | Configura las políticas RLS (ver sección correspondiente más abajo) |
+| 4 | Copia la **Project URL** desde *Settings → API* |
+| 5 | Copia la **Publishable Key** desde *Settings → API* |
+| 6 | Reemplaza la URL en `script.js` línea **159** |
+| 7 | Reemplaza la clave en `script.js` línea **160** |
+
+#### EmailJS
+
+| Paso | Acción |
+|---|---|
+| 1 | Crea una cuenta en [emailjs.com](https://emailjs.com) |
+| 2 | Conecta tu proveedor de correo en *Email Services* |
+| 3 | Crea las plantillas de correo (variables requeridas detalladas más abajo) |
+| 4 | Copia la **Public Key** desde *Account → API Keys* |
+| 5 | Copia el **Service ID** desde *Email Services* |
+| 6 | Copia los **Template IDs** desde *Email Templates* |
+| 7 | Reemplaza la Public Key en `script.js` línea **72** |
+| 8 | Reemplaza el Service ID y Template IDs en `script.js` líneas **582**, **622** y **662** |
+
+#### Usuarios
+
+| Paso | Acción |
+|---|---|
+| 1 | Edita `usuarios.json` y reemplaza todos los usuarios con los de tu equipo |
+| 2 | Asegúrate de tener al menos un usuario con `"rol": "admin"` |
+
+---
+
 ## 🟢 Supabase
 
 ### ¿Qué es Supabase?
