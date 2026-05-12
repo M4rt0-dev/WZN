@@ -15,9 +15,10 @@
 7. [Sistema de autenticación y roles](#-sistema-de-autenticación-y-roles)
 8. [Gestión de cookies y servicios externos](#-gestión-de-cookies-y-servicios-externos)
 9. [Configuración de servicios externos](#-configuración-de-servicios-externos)
-10. [Guía de mantenimiento rápido](#-guía-de-mantenimiento-rápido)
-11. [Advertencia de seguridad](#️-advertencia-de-seguridad)
-12. [Documentación detallada](#-documentación-detallada)
+10. [Cómo duplicar el proyecto](#-cómo-duplicar-el-proyecto)
+11. [Guía de mantenimiento rápido](#-guía-de-mantenimiento-rápido)
+12. [Advertencia de seguridad](#️-advertencia-de-seguridad)
+13. [Documentación detallada](#-documentación-detallada)
 
 ---
 
@@ -295,6 +296,70 @@ La tabla en Supabase que usa el sistema se llama **`fichajes`** y tiene estas co
 | `enServicio` | boolean | Si el empleado está actualmente fichado |
 | `clockInTime` | number (timestamp ms) | Momento en que entró de servicio |
 | `totalSeconds` | number | Segundos acumulados en la semana |
+
+---
+
+## 🍴 Cómo duplicar el proyecto
+
+Si quieres usar este proyecto como base para tu propio servidor o comunidad, deberás **reemplazar todas las claves y credenciales** de los servicios externos. Usar las claves originales supondría mezclar tus datos con los del proyecto original, o que tus formularios no lleguen a ningún lado.
+
+A continuación tienes el checklist completo de todo lo que hay que cambiar:
+
+### 1. Supabase (base de datos de fichajes)
+
+1. Crea un nuevo proyecto en [supabase.com](https://supabase.com).
+2. Crea la tabla `fichajes` con estas columnas:
+   - `user_id` → `text` (clave primaria)
+   - `enServicio` → `boolean`
+   - `clockInTime` → `bigint` (nullable)
+   - `totalSeconds` → `integer`
+3. Obtén la **Project URL** y la **Publishable Key** desde *Settings → API*.
+4. Actualiza en `script.js`:
+
+   | Línea | Qué cambiar |
+   |---|---|
+   | 159 | URL del proyecto → tu nueva Project URL |
+   | 160 | Clave publicable → tu nueva Publishable Key |
+
+5. Configura las **Row Level Security (RLS) policies** en Supabase (ver [`docs/INTEGRACIONES.md`](docs/INTEGRACIONES.md)).
+
+### 2. EmailJS (formularios de contacto)
+
+1. Crea una cuenta en [emailjs.com](https://emailjs.com).
+2. Conecta tu proveedor de correo en *Email Services* y anota el **Service ID** (`service_XXXXXXX`).
+3. Crea las plantillas necesarias en *Email Templates*:
+   - **Buzón anónimo:** variables `{{asunto}}`, `{{mensaje}}`, `{{adjunto}}`.
+   - **Anuncios y sugerencias:** variables `{{nombre}}`, `{{telefono}}`, `{{titulo}}`, `{{descripcion}}`.
+4. Obtén la **Public Key** desde *Account → API Keys*.
+5. Actualiza en `script.js`:
+
+   | Línea(s) | Qué cambiar |
+   |---|---|
+   | 72 | Public Key en `emailjs.init('...')` |
+   | 582 | Service ID + Template ID del buzón anónimo |
+   | 622 | Service ID + Template ID del formulario de anuncios |
+   | 662 | Service ID + Template ID del formulario de sugerencias |
+
+### 3. Usuarios (`usuarios.json`)
+
+Reemplaza todos los usuarios del archivo `usuarios.json` con los de tu propio equipo. El formato de cada entrada es:
+
+```json
+{ "user": "Nombre_Apellido", "pass": "contraseña", "nombre": "Nombre Apellido", "rol": "empleado" }
+```
+
+Asegúrate de tener al menos un usuario con `"rol": "admin"` para poder gestionar el panel de directiva.
+
+### 4. Contenido del sitio
+
+Más allá de las claves, recuerda actualizar también:
+
+- **Nombre y logos** de tu organización (imágenes en `images/`, referencias en los HTML).
+- **Textos legales** (`aviso-legal.html`, `politica-privacidad.html`, `politica-cookies.html`) con los datos de tu entidad.
+- **Contenido estático** (noticias, equipo, eventos, tarifas) con la información de tu proyecto.
+- **Universo MEAZEL** (si no lo usas, puedes eliminar esas páginas y sus referencias en el menú).
+
+> Para más detalle sobre la configuración de Supabase y EmailJS, consulta [`docs/INTEGRACIONES.md`](docs/INTEGRACIONES.md).
 
 ---
 
