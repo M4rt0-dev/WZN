@@ -25,8 +25,8 @@ Si has obtenido permiso explícito para usar este proyecto como base, **debes re
 3. Configura las políticas RLS apropiadas (ver [Configurar Row Level Security](#configurar-row-level-security-rls-recomendada)).
 4. Obtén tu **Project URL** y tu **Publishable Key** desde *Settings → API* en el panel de Supabase.
 5. Sustituye en `script.js` (líneas 159 y 160):
-   - La URL del proyecto: `https://zokaarirkqourkkfmkso.supabase.co` → tu nueva URL.
-   - La clave publicable: `sb_publishable_Sjccw8zw3zWrCXXq_-2wIQ_nyeAr3Sx` → tu nueva clave.
+   - La URL del proyecto: `https://[TU-PROYECTO].supabase.co` (tu nueva URL, no la del proyecto original).
+   - La clave publicable: `sb_publishable_[TU_CLAVE]` (tu nueva clave, no la del proyecto original).
 
 ### Qué cambiar en EmailJS
 
@@ -35,10 +35,10 @@ Si has obtenido permiso explícito para usar este proyecto como base, **debes re
 3. Crea las plantillas de correo necesarias (una para el buzón anónimo y otra para anuncios/sugerencias), replicando las variables de los formularios documentadas más abajo.
 4. Obtén tu **Public Key**, tu **Service ID** y los **Template IDs** desde el panel de EmailJS.
 5. Sustituye en `script.js`:
-   - Línea 72: `ERhS_42VHBVxNpsCQ` → tu Public Key.
-   - Líneas 582, 622, 662: `service_a6y2ih9` → tu Service ID.
-   - Línea 582: `template_9887dpi` → tu Template ID del buzón anónimo.
-   - Líneas 622 y 662: `template_dh8tpdk` → tu Template ID de anuncios/sugerencias.
+   - Línea 72: tu Public Key (no la del proyecto original).
+   - Líneas 582, 622, 662: tu Service ID (no el del proyecto original).
+   - Línea 582: tu Template ID del buzón anónimo.
+   - Líneas 622 y 662: tu Template ID de anuncios/sugerencias.
 
 ### Otros enlaces y referencias a actualizar
 
