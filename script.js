@@ -1,5 +1,51 @@
 // === script.js ===
 
+// === HAMBURGER MENU (RESPONSIVE) ===
+document.addEventListener('DOMContentLoaded', function () {
+    var nav = document.querySelector('nav');
+    if (!nav) return;
+    var navUl = nav.querySelector('ul');
+    if (!navUl) return;
+
+    // Inyectar botón hamburguesa antes del ul
+    var toggle = document.createElement('button');
+    toggle.className = 'nav-toggle';
+    toggle.setAttribute('aria-label', 'Abrir menú');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.innerHTML = '<span></span><span></span><span></span>';
+    nav.insertBefore(toggle, navUl);
+
+    // Toggle abrir/cerrar menú
+    toggle.addEventListener('click', function () {
+        var isOpen = navUl.classList.toggle('nav-open');
+        toggle.classList.toggle('active', isOpen);
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Cerrar menú al pulsar un enlace (excepto dropbtn)
+    navUl.querySelectorAll('a:not(.dropbtn)').forEach(function (link) {
+        link.addEventListener('click', function () {
+            navUl.classList.remove('nav-open');
+            toggle.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    // Dropdown en móvil: abrir/cerrar con clic en lugar de hover
+    nav.querySelectorAll('.dropbtn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+                var dropdown = btn.closest('.dropdown');
+                if (dropdown) {
+                    dropdown.classList.toggle('open');
+                }
+            }
+        });
+    });
+});
+
 // === BANNER DE COOKIES ===
 (function () {
     var COOKIE_KEY = 'wzn_cookie_consent';

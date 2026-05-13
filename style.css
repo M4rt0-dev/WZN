@@ -2187,3 +2187,123 @@ iframe {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
+
+/* === HAMBURGER MENU (MÓVIL) === */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 1100;
+    flex-shrink: 0;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: white;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
+    nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0;
+    }
+
+    /* Ocultar menú por defecto en móvil */
+    nav > ul {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        padding: 8px 0;
+        margin-top: 0.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Mostrar menú al activar hamburguesa */
+    nav > ul.nav-open {
+        display: flex;
+    }
+
+    nav > ul > li {
+        width: 100%;
+    }
+
+    nav > ul > li > a {
+        display: block;
+        padding: 10px 0;
+        font-size: 0.95rem;
+    }
+
+    /* Dropdown en móvil: se despliega de forma estática */
+    nav ul ul.dropdown-content {
+        position: static !important;
+        transform: none !important;
+        top: auto !important;
+        left: auto !important;
+        box-shadow: none !important;
+        border-top: none !important;
+        border-radius: 0 !important;
+        min-width: 100% !important;
+        background: rgba(0, 0, 0, 0.35) !important;
+        backdrop-filter: none !important;
+        display: none !important;
+    }
+
+    .dropdown.open > ul.dropdown-content {
+        display: flex !important;
+    }
+
+    nav ul ul.dropdown-content::before {
+        display: none !important;
+    }
+
+    nav ul ul.dropdown-content li a {
+        padding: 12px 20px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Precio-item: apilar en pantallas muy pequeñas */
+    .precio-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .precio-texto {
+        padding-right: 0;
+    }
+
+    /* Cookie banner más compacto */
+    #wzn-cookie-banner {
+        padding: 1rem;
+        gap: 1rem;
+    }
+}
