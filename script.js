@@ -177,113 +177,6 @@
     });
 })();
 
-document.addEventListener('DOMContentLoaded', function () {
-    if (!document.body || document.body.dataset.wznNavReady === 'true') return;
-
-    var nav = document.querySelector('nav');
-    if (!nav) return;
-
-    var navList = Array.prototype.find.call(nav.children, function (child) {
-        return child.tagName === 'UL';
-    });
-
-    if (!navList) return;
-
-    document.body.dataset.wznNavReady = 'true';
-
-    if (!nav.id) nav.id = 'wzn-site-nav';
-    if (!navList.id) navList.id = 'wzn-site-nav-list';
-
-    var toggle = nav.querySelector('.nav-toggle');
-    if (!toggle) {
-        toggle = document.createElement('button');
-        toggle.type = 'button';
-        toggle.className = 'nav-toggle';
-        toggle.setAttribute('aria-label', 'Abrir menú de navegación');
-        toggle.setAttribute('aria-controls', navList.id);
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.innerHTML = '<span aria-hidden="true"></span>';
-        nav.insertBefore(toggle, navList);
-    }
-
-    var mobileQuery = window.matchMedia('(max-width: 900px)');
-    var dropdowns = nav.querySelectorAll('.dropdown');
-
-    function closeDropdowns() {
-        dropdowns.forEach(function (dropdown) {
-            dropdown.classList.remove('dropdown-open');
-            var trigger = dropdown.querySelector('.dropbtn');
-            if (trigger) trigger.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    function syncMenuState(isOpen) {
-        nav.classList.toggle('nav-open', isOpen);
-        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
-        document.body.classList.toggle('nav-locked', isOpen && mobileQuery.matches);
-
-        if (!isOpen) closeDropdowns();
-    }
-
-    toggle.addEventListener('click', function () {
-        syncMenuState(!nav.classList.contains('nav-open'));
-    });
-
-    dropdowns.forEach(function (dropdown) {
-        var trigger = dropdown.querySelector('.dropbtn');
-        if (!trigger) return;
-
-        trigger.setAttribute('aria-haspopup', 'true');
-        trigger.setAttribute('aria-expanded', 'false');
-
-        trigger.addEventListener('click', function (event) {
-            if (!mobileQuery.matches) return;
-
-            event.preventDefault();
-            var willOpen = !dropdown.classList.contains('dropdown-open');
-            closeDropdowns();
-            dropdown.classList.toggle('dropdown-open', willOpen);
-            trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-        });
-    });
-
-    nav.querySelectorAll('a[href]').forEach(function (link) {
-        link.addEventListener('click', function () {
-            if (link.classList.contains('dropbtn') && mobileQuery.matches) return;
-            syncMenuState(false);
-        });
-    });
-
-    document.addEventListener('click', function (event) {
-        if (!nav.contains(event.target)) {
-            closeDropdowns();
-        }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-            syncMenuState(false);
-        }
-    });
-
-    function handleViewportChange() {
-        if (!mobileQuery.matches) {
-            document.body.classList.remove('nav-locked');
-            nav.classList.remove('nav-open');
-            closeDropdowns();
-            toggle.setAttribute('aria-expanded', 'false');
-            toggle.setAttribute('aria-label', 'Abrir menú de navegación');
-        }
-    }
-
-    if (typeof mobileQuery.addEventListener === 'function') {
-        mobileQuery.addEventListener('change', handleViewportChange);
-    } else {
-        mobileQuery.addListener(handleViewportChange);
-    }
-});
-
 // === animations.js - Manejo de animaciones de entrada y salida ===
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -785,24 +678,21 @@ if (formSugerencias) {
 
     // A) Funcionalidad del Acordeón Desplegable
     const accordions = document.querySelectorAll('.accordion-btn');
-
-    function updateAccordionHeight(button) {
-        const content = button.nextElementSibling;
-        if (!content) return;
-        content.style.maxHeight = button.classList.contains('active') ? `${content.scrollHeight + 24}px` : null;
-    }
     
     accordions.forEach(acc => {
-        acc.setAttribute('aria-expanded', 'false');
         acc.addEventListener('click', function() {
             this.classList.toggle('active');
-            this.setAttribute('aria-expanded', this.classList.contains('active') ? 'true' : 'false');
-            updateAccordionHeight(this);
+            const content = this.nextElementSibling;
+            
+            if (content.style.maxHeight) {
+                // Si está abierto, lo cierra
+                content.style.maxHeight = null;
+            } else {
+                // Si está cerrado, calcula el tamaño interior para abrirlo
+                // Añadimos un pequeño margen extra de seguridad para el reproductor TV
+                content.style.maxHeight = (content.scrollHeight + 50) + "px";
+            }
         });
-    });
-
-    window.addEventListener('resize', () => {
-        accordions.forEach(updateAccordionHeight);
     });
 
     // B) Funcionalidad del Carrusel TV (Botones Izquierda / Derecha)
@@ -812,8 +702,6 @@ if (formSugerencias) {
         const trackContainer = carousel.querySelector('.tv-track-container');
         const prevBtn = carousel.querySelector('.prev-btn');
         const nextBtn = carousel.querySelector('.next-btn');
-
-        if (!trackContainer || !prevBtn || !nextBtn) return;
 
         prevBtn.addEventListener('click', () => {
             trackContainer.scrollBy({
