@@ -2,13 +2,13 @@
 
 // === HAMBURGER MENU (RESPONSIVE) ===
 document.addEventListener('DOMContentLoaded', function () {
-    var nav = document.querySelector('nav');
+    const nav = document.querySelector('nav');
     if (!nav) return;
-    var navUl = nav.querySelector('ul');
+    const navUl = nav.querySelector('ul');
     if (!navUl) return;
 
     // Inyectar botón hamburguesa antes del ul
-    var toggle = document.createElement('button');
+    const toggle = document.createElement('button');
     toggle.className = 'nav-toggle';
     toggle.setAttribute('aria-label', 'Abrir menú');
     toggle.setAttribute('aria-expanded', 'false');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Toggle abrir/cerrar menú
     toggle.addEventListener('click', function () {
-        var isOpen = navUl.classList.toggle('nav-open');
+        const isOpen = navUl.classList.toggle('nav-open');
         toggle.classList.toggle('active', isOpen);
         toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (window.innerWidth <= 768) {
                 e.preventDefault();
                 e.stopPropagation();
-                var dropdown = btn.closest('.dropdown');
+                const dropdown = btn.closest('.dropdown');
                 if (dropdown) {
                     dropdown.classList.toggle('open');
                 }
