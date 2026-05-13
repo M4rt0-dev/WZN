@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!nav) return;
     const navUl = nav.querySelector('ul');
     if (!navUl) return;
+    if (nav.querySelector('.nav-toggle')) return;
 
     // Inyectar botón hamburguesa antes del ul
     const toggle = document.createElement('button');
