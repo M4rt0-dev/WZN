@@ -2171,3 +2171,19 @@ body.page-exit footer {
         font-size: 0.85rem;
     }
 }
+
+/* Ajustes responsive mínimos */
+img,
+video,
+iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+.tabla-empleados,
+.tabla-legal {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
