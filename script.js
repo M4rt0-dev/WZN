@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         updateUI();
-        setInterval(updateUI, 60000); // Actualiza la vista cada minuto
+        const updateInterval = setInterval(updateUI, 60000); // Actualiza la vista cada minuto
 
         // Funcionalidad del botón Entrar/Salir de servicio
         btnFichaje.addEventListener('click', async function() {
@@ -441,6 +441,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 alert("Has sido desfichado automáticamente al cerrar sesión para guardar tus horas.");
             }
             localStorage.clear();
+            clearInterval(updateInterval);
             window.location.href = 'portal.html';
         });
     }
@@ -470,7 +471,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const tbodyEmpleados = document.getElementById('lista-empleados');
         const contadorEmpleados = document.getElementById('contador-empleados');
-        const formNuevoEmpleado = document.getElementById('form-nuevo-empleado');
 
         async function cargarTablaEmpleados() {
             tbodyEmpleados.innerHTML = '<tr><td colspan="5">Cargando datos desde usuarios.json y Supabase...</td></tr>';
@@ -583,16 +583,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Cargar tabla al entrar
         cargarTablaEmpleados();
-
-        // Intentar registrar un nuevo empleado
-        if (formNuevoEmpleado) {
-            formNuevoEmpleado.addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Explicación: JS Frontend no puede editar archivos físicos por seguridad.
-                alert('⚠️ Para crear un nuevo empleado de forma permanente y segura, debes añadirlo manualmente en el archivo "usuarios.json" usando tu editor de código. El sistema usa ese archivo como única base de datos para los usuarios.');
-                this.reset();
-            });
-        }
 
         // Cerrar sesión directiva
         document.getElementById('btn-logout-dir').addEventListener('click', function() {
