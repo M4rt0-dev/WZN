@@ -808,8 +808,10 @@ nav ul ul.dropdown-content::before {
     background: transparent;
 }
 
-.dropdown:hover ul.dropdown-content {
-    display: flex !important;
+@media (min-width: 769px) {
+    .dropdown:hover ul.dropdown-content {
+        display: flex;
+    }
 }
 
 nav ul ul.dropdown-content li {
@@ -1611,16 +1613,11 @@ iframe {
         min-width: 100% !important;
         background: rgba(0, 0, 0, 0.35) !important;
         backdrop-filter: none !important;
-        display: none !important;
+        display: none;
     }
 
-    .dropdown:hover > ul.dropdown-content {
-        display: none !important;
-    }
-
-    .dropdown.open > ul.dropdown-content,
-    .dropdown.open:hover > ul.dropdown-content {
-        display: flex !important;
+    .dropdown.open > ul.dropdown-content {
+        display: flex;
     }
 
     nav ul ul.dropdown-content::before {
