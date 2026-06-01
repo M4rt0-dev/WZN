@@ -1614,7 +1614,12 @@ iframe {
         display: none !important;
     }
 
-    .dropdown.open > ul.dropdown-content {
+    .dropdown:hover > ul.dropdown-content {
+        display: none !important;
+    }
+
+    .dropdown.open > ul.dropdown-content,
+    .dropdown.open:hover > ul.dropdown-content {
         display: flex !important;
     }
 
